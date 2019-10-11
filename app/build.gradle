@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+
+// 加载签名配置文件
+def keyFile = rootProject.file("gradle.properties")
+def keyProperties = new Properties()
+keyProperties.load(new FileInputStream(keyFile))
+
+def releaseTime() {
+    return new Date().format("yyyy_MM_dd", TimeZone.getTimeZone("UTC"))
+}
+
+def transform(String targetStr) {
+    return new String(targetStr.getBytes("iso8859-1"), "GBK")
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.martin.kylin"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+//        versionCode rootProject.ext.versionCode
+//        versionName rootProject.ext.versionName
+
+        flavorDimensions("versionCode")
+    }
+
+    signingConfigs {
+        config {
+            keyAlias keyProperties['keyAlias_']
+            keyPassword keyProperties['keyPassword_']
+            storeFile file(keyProperties['storeFile_'])
+            storePassword keyProperties['storePassword_']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true // 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+    }
+
+    productFlavors {
+
+        kylin_online {
+            dimension "versionCode"
+            versionCode = 1
+            versionName = "1.0.0"
+            buildConfigField "boolean", "developMode", "true"
+            resValue "string", "app_name", transform(APP_NAME_ONLINE)
+        }
+
+        kylin_dev {
+            dimension "versionCode"
+            versionCode = 1
+            versionName = "1.0.1"
+            applicationIdSuffix '.dev'
+            buildConfigField "boolean", "developMode", "true"
+            resValue "string", "app_name", transform(APP_NAME_DEVElOP)
+        }
+
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.productFlavors[0].name}_v${variant.versionName}_${releaseTime()}.apk".toLowerCase()
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+}
