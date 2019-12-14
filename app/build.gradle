@@ -53,21 +53,21 @@ android {
 
     productFlavors {
 
-        kylin_online {
+        kylin_online {//正式线
             dimension "versionCode"
-            versionCode = 1
-            versionName = "1.0.0"
+            versionCode = 101
+            versionName = "1.0.1"
             buildConfigField "boolean", "developMode", "true"
             resValue "string", "app_name", transform(APP_NAME_ONLINE)
         }
 
-        kylin_dev {
+        kylin_tline {//测试线
             dimension "versionCode"
-            versionCode = 1
+            versionCode = 101
             versionName = "1.0.1"
-            applicationIdSuffix '.dev'
+            applicationIdSuffix '.tline'
             buildConfigField "boolean", "developMode", "true"
-            resValue "string", "app_name", transform(APP_NAME_DEVElOP)
+            resValue "string", "app_name", transform(APP_NAME_TLINE)
         }
 
     }
