@@ -24,7 +24,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        flavorDimensions("environment")
+        flavorDimensions("environment","money")
     }
 
     signingConfigs {
@@ -66,6 +66,15 @@ android {
             resValue "string", "app_name", transform(APP_NAME_TLINE)
         }
 
+        vip{//收费版本
+            dimension "money"
+            buildConfigField("boolean", "feeMode", "true")
+        }
+
+        free{//免费版本
+            dimension "money"
+            buildConfigField("boolean", "feeMode", "false")
+        }
     }
 
     applicationVariants.all { variant ->
