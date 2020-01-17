@@ -21,10 +21,10 @@ android {
         applicationId "com.martin.kylin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-//        versionCode rootProject.ext.versionCode
-//        versionName rootProject.ext.versionName
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
-        flavorDimensions("versionCode")
+        flavorDimensions("environment")
     }
 
     signingConfigs {
@@ -53,18 +53,14 @@ android {
 
     productFlavors {
 
-        kylin_online {//正式线
-            dimension "versionCode"
-            versionCode = 101
-            versionName = "1.0.1"
-            buildConfigField "boolean", "developMode", "true"
+        online {//正式线
+            dimension "environment"
+            buildConfigField "boolean", "developMode", "false"
             resValue "string", "app_name", transform(APP_NAME_ONLINE)
         }
 
-        kylin_tline {//测试线
-            dimension "versionCode"
-            versionCode = 101
-            versionName = "1.0.1"
+        tline {//测试线
+            dimension "environment"
             applicationIdSuffix '.tline'
             buildConfigField "boolean", "developMode", "true"
             resValue "string", "app_name", transform(APP_NAME_TLINE)
