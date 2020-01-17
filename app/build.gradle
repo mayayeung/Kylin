@@ -1,10 +1,5 @@
 apply plugin: 'com.android.application'
 
-// 加载签名配置文件
-def keyFile = rootProject.file("gradle.properties")
-def keyProperties = new Properties()
-keyProperties.load(new FileInputStream(keyFile))
-
 def releaseTime() {
     return new Date().format("yyyy_MM_dd", TimeZone.getTimeZone("UTC"))
 }
@@ -29,10 +24,10 @@ android {
 
     signingConfigs {
         config {
-            keyAlias keyProperties['keyAlias_']
-            keyPassword keyProperties['keyPassword_']
-            storeFile file(keyProperties['storeFile_'])
-            storePassword keyProperties['storePassword_']
+            keyAlias keyAlias_
+            keyPassword keyPassword_
+            storeFile file(storeFile_)
+            storePassword storePassword_
         }
     }
 
