@@ -1,1 +1,1 @@
-include ':app', ':JAVA-demo', ':LIB-android-core', ':CMPT_player'
+include ':app', ':JAVA-demo', ':COMMON_core', ':CMPT_player'

@@ -81,7 +81,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':LIB-android-core')
+    implementation project(':COMMON_core')
     implementation project(':CMPT_player')
 
 }
