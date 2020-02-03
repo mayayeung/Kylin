@@ -1,4 +1,4 @@
-if (isRunAlone.toBoolean()) {
+if (CMPT_PLAYER_IS_RUN_ALONE.toBoolean()) {
     apply plugin: 'com.android.application'
 } else {
     apply plugin: 'com.android.library'
@@ -9,7 +9,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        if (isRunAlone.toBoolean()) {
+        if (CMPT_PLAYER_IS_RUN_ALONE.toBoolean()) {
             applicationId "com.martin.cmpt.player"
         }
         minSdkVersion rootProject.ext.minSdkVersion
@@ -23,7 +23,7 @@ android {
 
     sourceSets {
         main {
-            if (isRunAlone.toBoolean()) {
+            if (CMPT_PLAYER_IS_RUN_ALONE.toBoolean()) {
                 manifest.srcFile 'src/main/manifest/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/main/AndroidManifest.xml'

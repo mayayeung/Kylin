@@ -82,6 +82,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':COMMON_core')
-    implementation project(':CMPT_player')
-
+    if (!CMPT_PLAYER_IS_RUN_ALONE.toBoolean()) {
+        implementation project(':CMPT_player')
+    }
 }

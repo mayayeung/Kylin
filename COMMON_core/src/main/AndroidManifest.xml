@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.martin.core" />
+    package="com.martin.core" >
+    <application>
+
+    </application>
+</manifest>

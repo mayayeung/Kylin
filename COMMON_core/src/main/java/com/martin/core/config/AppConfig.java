@@ -1,6 +1,7 @@
 package com.martin.core.config;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -18,17 +19,18 @@ public class AppConfig {
     private static Application application;
     private static Handler handler;//主线程的handler
     private static ExecutorService es;
+    private static boolean debug = false;
 
     public static void init(Application application) {
         AppConfig.application = application;
+        debug = application.getApplicationInfo() != null
+                && (application.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         handler = new Handler(Looper.getMainLooper());
         es = Executors.newFixedThreadPool(5);
     }
 
-    public static void shutDown() {
-        if (es != null && !es.isShutdown()) {
-            es.shutdown();
-        }
+    public static boolean isDebug() {
+        return debug;
     }
 
     public static Application getContext() {
@@ -60,4 +62,9 @@ public class AppConfig {
         return null;
     }
 
+    public static void shutDown() {
+        if (es != null && !es.isShutdown()) {
+            es.shutdown();
+        }
+    }
 }

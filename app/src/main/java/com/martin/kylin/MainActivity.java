@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.martin.cmpt.player.PlayerActivity;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -15,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.player_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayerActivity.launchSelf(MainActivity.this);
             }
         });
     }
