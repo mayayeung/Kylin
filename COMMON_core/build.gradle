@@ -18,6 +18,13 @@ android {
 
     }
 
+    //编译选项
+    compileOptions {
+        //使用jdk1.8 编译
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
