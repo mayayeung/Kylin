@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.martin.core.utils.ToastUtils;
@@ -25,6 +27,18 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_main);
         frameLayout = findViewById(R.id.camera_preview);
+        Button settings = findViewById(R.id.camera_settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingsFragment settingsFragment = new SettingsFragment();
+                settingsFragment.setCamera(CameraPreview.getCameraInstance());
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.camera_preview, settingsFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         //check camere permissions
         checkPermissions(PERMISSION_REQUESTCODE_CAMERA, permissions_camera);
 

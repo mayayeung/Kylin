@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder holder;
-    private Camera camera;
+    private static Camera camera;
 
 
     public CameraPreview(Context context) {
@@ -35,14 +35,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    private Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open();
-        } catch (Exception e) {
-            ToastUtils.showToastOnce("camera is not available!");
+    public static Camera getCameraInstance() {
+        if (null==camera) {
+            try {
+                camera = Camera.open();
+            } catch (Exception e) {
+                ToastUtils.showToastOnce("相机打开失败！");
+            }
         }
-        return c;
+        return camera;
     }
 
     @Override
