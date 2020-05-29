@@ -20,19 +20,27 @@ import com.martin.core.utils.ToastUtils;
 public class MainActivity extends Activity {
     public final static int PERMISSION_REQUESTCODE_CAMERA = 0x99;
     private static int lastPermissionsRequestCode;
-    private String[] permissions_camera = {Manifest.permission.CAMERA};
+    private String[] permissions_camera = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
+    private SettingsFragment settingsFragment;
+    private CameraPreview cameraPreview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_main);
         frameLayout = findViewById(R.id.camera_preview);
         Button settings = findViewById(R.id.camera_settings);
+        Button takePhoto = findViewById(R.id.camera_takephoto);
+
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingsFragment.takePicture();
+            }
+        });
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingsFragment settingsFragment = new SettingsFragment();
-                settingsFragment.setCamera(CameraPreview.getCameraInstance());
                 getFragmentManager().beginTransaction()
                         .replace(R.id.camera_preview, settingsFragment)
                         .addToBackStack(null)
@@ -41,12 +49,28 @@ public class MainActivity extends Activity {
         });
         //check camere permissions
         checkPermissions(PERMISSION_REQUESTCODE_CAMERA, permissions_camera);
-
     }
 
-    private void openCamera() {
-        CameraPreview cameraView = new CameraPreview(this);
-        frameLayout.addView(cameraView);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (null == cameraPreview) {
+            initCamera();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cameraPreview = null;
+    }
+
+    private void initCamera() {
+        cameraPreview = new CameraPreview(this);
+        frameLayout.addView(cameraPreview);
+        //camera settings
+        settingsFragment = new SettingsFragment();
+        settingsFragment.setCamera(CameraPreview.getCameraInstance());
     }
 
     private void checkPermissions(final int requestCode, String[] permissions) {
@@ -91,7 +115,7 @@ public class MainActivity extends Activity {
 
     private void onRequestPermissionsSuccess(boolean request, int requestCode) {
         if (requestCode == PERMISSION_REQUESTCODE_CAMERA) {
-            openCamera();
+            initCamera();
         }
     }
 
