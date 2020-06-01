@@ -2,6 +2,7 @@ package com.martin.cmpt.camera;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,45 +11,56 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.martin.core.utils.ToastUtils;
+
 
 /**
  * Created by DingJinZhu on 2020/5/28.
  * Description:
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
     public final static int PERMISSION_REQUESTCODE_CAMERA = 0x99;
     private static int lastPermissionsRequestCode;
-    private String[] permissions_camera = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
     private SettingsFragment settingsFragment;
     private CameraPreview cameraPreview;
+    private ImageView mediaPreview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_main);
         frameLayout = findViewById(R.id.camera_preview);
+        mediaPreview = findViewById(R.id.media_preview);
         Button settings = findViewById(R.id.camera_settings);
         Button takePhoto = findViewById(R.id.camera_takephoto);
+        takePhoto.setOnClickListener(this);
+        settings.setOnClickListener(this);
+        mediaPreview.setOnClickListener(this);
 
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                settingsFragment.takePicture();
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.camera_preview, settingsFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        settingsFragment = new SettingsFragment();
         //check camere permissions
         checkPermissions(PERMISSION_REQUESTCODE_CAMERA, permissions_camera);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.camera_settings) {
+            getFragmentManager().beginTransaction().replace(R.id.camera_preview, settingsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (v.getId() == R.id.camera_takephoto) {
+            settingsFragment.takePicture(mediaPreview);
+        }
+        if (v.getId() == R.id.media_preview) {
+            Intent intent = new Intent(this, ShowPhotoActivity.class);
+            intent.setDataAndType(settingsFragment.getOutputMediaFileUri(), settingsFragment.getOutputMediaFileType());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -69,7 +81,6 @@ public class MainActivity extends Activity {
         cameraPreview = new CameraPreview(this);
         frameLayout.addView(cameraPreview);
         //camera settings
-        settingsFragment = new SettingsFragment();
         settingsFragment.setCamera(CameraPreview.getCameraInstance());
     }
 

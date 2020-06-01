@@ -9,6 +9,7 @@ import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.martin.core.utils.ToastUtils;
 
@@ -84,7 +85,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
     }
 
-    public void takePicture() {
+    public void takePicture(final ImageView mediaPreview) {
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -97,6 +98,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     FileOutputStream fos = new FileOutputStream(pictureFile);
                     fos.write(data);
                     fos.close();
+
+                    mediaPreview.setImageURI(outputMediaFileUri);
                     camera.startPreview();
                 } catch (FileNotFoundException e) {
                     Log.d(TAG, "File not found: " + e.getMessage());

@@ -17,6 +17,15 @@
         android:layout_marginLeft="30dp"
         android:text="拍照"
         android:layout_toRightOf="@+id/camera_settings"/>
+    <ImageView
+        android:id="@+id/media_preview"
+        android:layout_marginTop="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/camera_takephoto"
+        android:background="#000"
+        />
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
