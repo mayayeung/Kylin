@@ -51,8 +51,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        //set preview orientation
         int rotation = getDisplayOrientation();
         camera.setDisplayOrientation(rotation);
+        //set photo orientation
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setRotation(rotation);
+        camera.setParameters(parameters);
     }
 
     @Override

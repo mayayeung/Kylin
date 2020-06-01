@@ -1,6 +1,7 @@
 package com.martin.cmpt.camera;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class ShowPhotoActivity extends Activity {
             view.setLayoutParams(layoutParams);
             relativeLayout.addView(view);
         }
+        relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
         setContentView(relativeLayout, layoutParams);
     }
 }
