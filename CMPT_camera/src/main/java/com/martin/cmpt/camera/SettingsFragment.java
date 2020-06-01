@@ -27,7 +27,7 @@ import java.util.List;
  * Description:
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String TAG = SettingsFragment.class.getSimpleName();
+    private static final String TAG = "camera_setting";
     public static final String KEY_PREF_PREV_SIZE = "preview_size";
     public static final String KEY_PREF_PIC_SIZE = "picture_size";
     public static final String KEY_PREF_VIDEO_SIZE = "video_size";
@@ -50,6 +50,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+//        getActivity().setTheme(R.style.PreferenceTheme);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         setDefault(PreferenceManager.getDefaultSharedPreferences(getActivity()));
         init(PreferenceManager.getDefaultSharedPreferences(getActivity()));
