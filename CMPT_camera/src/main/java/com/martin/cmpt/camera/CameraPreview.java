@@ -2,8 +2,11 @@ package com.martin.cmpt.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import com.martin.core.utils.ToastUtils;
 
@@ -36,7 +39,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public static Camera getCameraInstance() {
-        if (null==camera) {
+        if (null == camera) {
             try {
                 camera = Camera.open();
             } catch (Exception e) {
@@ -48,7 +51,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        int rotation = getDisplayOrientation();
+        camera.setDisplayOrientation(rotation);
     }
 
     @Override
@@ -58,5 +62,31 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         camera.stopPreview();
         camera.release();
         camera = null;
+    }
+
+    public int getDisplayOrientation() {
+        Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        Camera.CameraInfo camInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, camInfo);
+
+        int result = (camInfo.orientation - degrees + 360) % 360;
+        return result;
     }
 }
