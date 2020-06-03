@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.martin.cmpt.camera.Utils.CameraUtils;
 import com.martin.core.utils.ToastUtils;
 
 
@@ -37,8 +38,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mediaPreview = findViewById(R.id.media_preview);
         Button settings = findViewById(R.id.camera_settings);
         Button takePhoto = findViewById(R.id.camera_takephoto);
+        Button switchCamera = findViewById(R.id.camera_switch);
         takePhoto.setOnClickListener(this);
         settings.setOnClickListener(this);
+        switchCamera.setOnClickListener(this);
         mediaPreview.setOnClickListener(this);
 
         settingsFragment = new SettingsFragment();
@@ -54,11 +57,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     .addToBackStack(null)
                     .commit();
         } else if (v.getId() == R.id.camera_takephoto) {
-            settingsFragment.takePicture(mediaPreview);
-        }
-        if (v.getId() == R.id.media_preview) {
+            CameraUtils.takePicture(mediaPreview);
+        } else if (v.getId() == R.id.camera_switch) {
+
+        } else if (v.getId() == R.id.media_preview) {
             Intent intent = new Intent(this, ShowPhotoActivity.class);
-            intent.setDataAndType(settingsFragment.getOutputMediaFileUri(), settingsFragment.getOutputMediaFileType());
+            intent.setDataAndType(CameraUtils.getOutputMediaFileUri(), CameraUtils.getOutputMediaFileType());
             startActivity(intent);
         }
     }
@@ -80,8 +84,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void initCamera() {
         cameraPreview = new CameraPreview(this);
         frameLayout.addView(cameraPreview);
-        //camera settings
-        settingsFragment.setCamera(CameraPreview.getCameraInstance());
     }
 
     private void checkPermissions(final int requestCode, String[] permissions) {

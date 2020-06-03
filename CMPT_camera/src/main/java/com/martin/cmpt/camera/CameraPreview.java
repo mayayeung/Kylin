@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import com.martin.cmpt.camera.Utils.CameraUtils;
 import com.martin.core.utils.ToastUtils;
 
 import java.io.IOException;
@@ -36,24 +37,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        camera = getCameraInstance();
+        camera = CameraUtils.getCameraInstance();
         try {
+            CameraUtils.setDefault(getContext());
             camera.setPreviewDisplay(holder);
             camera.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Camera getCameraInstance() {
-        if (null == camera) {
-            try {
-                camera = Camera.open();
-            } catch (Exception e) {
-                ToastUtils.showToastOnce("相机打开失败！");
-            }
-        }
-        return camera;
     }
 
     @Override
@@ -88,6 +79,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Parameters parameters = camera.getParameters();
         parameters.setRotation(rotation);
         camera.setParameters(parameters);
+        camera.autoFocus(null);
     }
 
     @Override
@@ -97,6 +89,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         camera.stopPreview();
         camera.release();
         camera = null;
+        CameraUtils.release();
     }
 
     public int getDisplayOrientation() {
