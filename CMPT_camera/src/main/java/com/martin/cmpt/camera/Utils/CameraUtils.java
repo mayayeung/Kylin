@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public class CameraUtils {
     private static int frontCameraIndex;
     private static int backCameraIndex;
     private static int cameraIndex;
+    private static OrientationEventListener listener;
 
     public static Camera getCameraInstance(Context context) {
         if (null == camera) {
@@ -58,6 +60,27 @@ public class CameraUtils {
                 getCameraInfo(context);
                 camera = Camera.open(cameraIndex);
                 parameters = camera.getParameters();
+                listener=new OrientationEventListener(context) {
+                    @Override
+                    public void onOrientationChanged(int orientation) {
+                        if (orientation == ORIENTATION_UNKNOWN) return;
+                        Camera.CameraInfo info = new Camera.CameraInfo();
+                        android.hardware.Camera.getCameraInfo(cameraIndex, info);
+                        orientation = (orientation + 45) / 90 * 90;
+                        int rotation = 0;
+                        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                            rotation = (info.orientation - orientation + 360) % 360;
+                        } else {  // back-facing camera
+                            rotation = (info.orientation + orientation) % 360;
+                        }
+                        if (null != camera) {
+                            Camera.Parameters parameters = camera.getParameters();
+                            parameters.setRotation(rotation);
+                            camera.setParameters(parameters);
+                        }
+                    }
+                };
+                listener.enable();
             } catch (Exception e) {
                 ToastUtils.showToastOnce("相机打开失败！");
             }
@@ -110,9 +133,6 @@ public class CameraUtils {
     public static void setRotation(Context context) {
         int rotation = getDisplayOrientation(context);
         camera.setDisplayOrientation(rotation);
-        //set photo orientation
-        Camera.Parameters parameters = camera.getParameters();
-        parameters.setRotation(rotation);
         camera.setParameters(parameters);
     }
 
@@ -136,13 +156,21 @@ public class CameraUtils {
         }
 
         Camera.CameraInfo camInfo = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, camInfo);
+        Camera.getCameraInfo(cameraIndex, camInfo);
 
-        int result = (camInfo.orientation - degrees + 360) % 360;
+        int result;
+        if (camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (camInfo.orientation + degrees) % 360;
+            result = (360 - result) % 360; // compensate the mirror
+        } else {
+            result = (camInfo.orientation - degrees + 360) % 360;
+        }
         return result;
     }
 
     public static void release() {
+        listener.disable();
+        listener = null;
         camera = null;
     }
 
