@@ -15,7 +15,7 @@
         android:id="@+id/camera_takephoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:text="拍照"
         android:layout_toRightOf="@+id/camera_settings"/>
 
@@ -23,7 +23,7 @@
         android:id="@+id/camera_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/camera_takephoto"
         android:text="切换" />
     <ImageView
@@ -31,7 +31,7 @@
         android:layout_marginTop="5dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/camera_switch"
         android:background="#fff"
         />

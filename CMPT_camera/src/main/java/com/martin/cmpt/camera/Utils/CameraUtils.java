@@ -7,9 +7,14 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.martin.cmpt.camera.CameraPreview;
 import com.martin.core.utils.ToastUtils;
 
 import java.io.File;
@@ -38,20 +43,103 @@ public class CameraUtils {
     public static final String KEY_PREF_GPS_DATA = "gps_data";
     public static final String KEY_PREF_EXPOS_COMP = "exposure_compensation";
     public static final String KEY_PREF_JPEG_QUALITY = "jpeg_quality";
+    public static final String KEY_PREF_CAMERA_INDEX = "camera_index";
     private static Uri outputMediaFileUri;
     private static String outputMediaFileType;
     private static Camera camera;
     private static Camera.Parameters parameters;
+    private static int frontCameraIndex;
+    private static int backCameraIndex;
+    private static int cameraIndex;
 
-    public static Camera getCameraInstance() {
+    public static Camera getCameraInstance(Context context) {
         if (null == camera) {
             try {
-                camera = Camera.open();
+                getCameraInfo(context);
+                camera = Camera.open(cameraIndex);
+                parameters = camera.getParameters();
             } catch (Exception e) {
                 ToastUtils.showToastOnce("相机打开失败！");
             }
         }
         return camera;
+    }
+
+    private static void getCameraInfo(Context context) {
+        Camera.CameraInfo camInfo = new Camera.CameraInfo();
+        int count = Camera.getNumberOfCameras();
+        for (int i = 0; i < count; i++) {
+            Camera.getCameraInfo(i, camInfo);
+            if (camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                frontCameraIndex = i;
+            }
+            if (camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                backCameraIndex = i;
+            }
+        }
+        cameraIndex = PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_PREF_CAMERA_INDEX, -1);
+        if (-1 == cameraIndex) {
+            cameraIndex = backCameraIndex;
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_PREF_CAMERA_INDEX, cameraIndex).commit();
+        }
+    }
+
+    public static void switchCamera(Context context, CameraPreview preview) {
+        cameraIndex = (cameraIndex == frontCameraIndex ? backCameraIndex : frontCameraIndex);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_PREF_CAMERA_INDEX, cameraIndex).commit();
+
+        if (null != camera) {
+//            preview.getHolder().removeCallback(preview);
+//            camera.setPreviewCallback(null);
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
+        getCameraInstance(context);
+        setDefault(context);
+        try {
+            camera.setPreviewDisplay(preview.getHolder());
+            camera.startPreview();
+            setRotation(context);
+            camera.autoFocus(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setRotation(Context context) {
+        int rotation = getDisplayOrientation(context);
+        camera.setDisplayOrientation(rotation);
+        //set photo orientation
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setRotation(rotation);
+        camera.setParameters(parameters);
+    }
+
+    private static int getDisplayOrientation(Context context) {
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        Camera.CameraInfo camInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, camInfo);
+
+        int result = (camInfo.orientation - degrees + 360) % 360;
+        return result;
     }
 
     public static void release() {
@@ -64,9 +152,6 @@ public class CameraUtils {
 
     public static void setDefault(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        CameraUtils.camera = getCameraInstance();
-        CameraUtils.parameters = camera.getParameters();
-
         String valPreviewSize = sharedPrefs.getString(KEY_PREF_PREV_SIZE, null);
         if (valPreviewSize == null) {
             SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -201,11 +286,15 @@ public class CameraUtils {
     }
 
     public static void setExposComp(String value) {
-        parameters.setExposureCompensation(Integer.parseInt(value));
+        if (!TextUtils.isEmpty(value)) {
+            parameters.setExposureCompensation(Integer.parseInt(value));
+        }
     }
 
     public static void setJpegQuality(String value) {
-        parameters.setJpegQuality(Integer.parseInt(value));
+        if (!TextUtils.isEmpty(value)) {
+            parameters.setJpegQuality(Integer.parseInt(value));
+        }
     }
 
     public static void setGpsData(Boolean value) {

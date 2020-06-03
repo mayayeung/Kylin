@@ -23,7 +23,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-        camera = CameraUtils.getCameraInstance();
+        camera = CameraUtils.getCameraInstance(getActivity());
         parameters = CameraUtils.getParameters();
         if (null != parameters) {
             loadSupportedPreviewSize();

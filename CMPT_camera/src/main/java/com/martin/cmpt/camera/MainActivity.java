@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else if (v.getId() == R.id.camera_takephoto) {
             CameraUtils.takePicture(mediaPreview);
         } else if (v.getId() == R.id.camera_switch) {
-
+            CameraUtils.switchCamera(this, cameraPreview);
         } else if (v.getId() == R.id.media_preview) {
             Intent intent = new Intent(this, ShowPhotoActivity.class);
             intent.setDataAndType(CameraUtils.getOutputMediaFileUri(), CameraUtils.getOutputMediaFileType());
