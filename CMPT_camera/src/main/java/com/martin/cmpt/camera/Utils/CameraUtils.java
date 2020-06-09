@@ -3,7 +3,9 @@ package com.martin.cmpt.camera.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -14,8 +16,10 @@ import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.martin.cmpt.camera.CameraPreview;
+import com.martin.core.utils.ScreenUtils;
 import com.martin.core.utils.ToastUtils;
 
 import java.io.File;
@@ -23,7 +27,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,19 +40,21 @@ import java.util.List;
  */
 public class CameraUtils {
     private static final String TAG = CameraUtils.class.getSimpleName();
+    private static final int MIN_PREVIEW_PIXELS = 480 * 320; // normal screen
+    private static final double MAX_ASPECT_DISTORTION = 0.15;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-    public static final String KEY_PREF_PREV_SIZE = "preview_size";
-    public static final String KEY_PREF_PIC_SIZE = "picture_size";
-    public static final String KEY_PREF_VIDEO_SIZE = "video_size";
-    public static final String KEY_PREF_FLASH_MODE = "flash_mode";
-    public static final String KEY_PREF_FOCUS_MODE = "focus_mode";
-    public static final String KEY_PREF_WHITE_BALANCE = "white_balance";
-    public static final String KEY_PREF_SCENE_MODE = "scene_mode";
-    public static final String KEY_PREF_GPS_DATA = "gps_data";
-    public static final String KEY_PREF_EXPOS_COMP = "exposure_compensation";
-    public static final String KEY_PREF_JPEG_QUALITY = "jpeg_quality";
-    public static final String KEY_PREF_CAMERA_INDEX = "camera_index";
+    public static final String KEY_PREF_PREV_SIZE = "preview_size_";
+    public static final String KEY_PREF_PIC_SIZE = "picture_size_";
+    public static final String KEY_PREF_VIDEO_SIZE = "video_size_";
+    public static final String KEY_PREF_FLASH_MODE = "flash_mode_";
+    public static final String KEY_PREF_FOCUS_MODE = "focus_mode_";
+    public static final String KEY_PREF_WHITE_BALANCE = "white_balance_";
+    public static final String KEY_PREF_SCENE_MODE = "scene_mode_";
+    public static final String KEY_PREF_GPS_DATA = "gps_data_";
+    public static final String KEY_PREF_EXPOS_COMP = "exposure_compensation_";
+    public static final String KEY_PREF_JPEG_QUALITY = "jpeg_quality_";
+    public static final String KEY_PREF_CAMERA_INDEX = "camera_index_";
     private static Uri outputMediaFileUri;
     private static String outputMediaFileType;
     private static Camera camera;
@@ -60,7 +70,7 @@ public class CameraUtils {
                 getCameraInfo(context);
                 camera = Camera.open(cameraIndex);
                 parameters = camera.getParameters();
-                listener=new OrientationEventListener(context) {
+                listener = new OrientationEventListener(context) {
                     @Override
                     public void onOrientationChanged(int orientation) {
                         if (orientation == ORIENTATION_UNKNOWN) return;
@@ -180,30 +190,241 @@ public class CameraUtils {
 
     public static void setDefault(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String valPreviewSize = sharedPrefs.getString(KEY_PREF_PREV_SIZE, null);
+        String valPreviewSize = sharedPrefs.getString(KEY_PREF_PREV_SIZE + cameraIndex, null);
         if (valPreviewSize == null) {
+            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            Point screenResolution = new Point();
+            display.getSize(screenResolution);//得到屏幕的尺寸，单位是像素
+
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(KEY_PREF_PREV_SIZE, getDefaultPreviewSize());
-            editor.putString(KEY_PREF_PIC_SIZE, getDefaultPictureSize());
-            editor.putString(KEY_PREF_VIDEO_SIZE, getDefaultVideoSize());
-            editor.putString(KEY_PREF_FOCUS_MODE, getDefaultFocusMode());
+            editor.putString(KEY_PREF_PREV_SIZE + cameraIndex, getDefaultPreviewSize(screenResolution));
+            editor.putString(KEY_PREF_PIC_SIZE + cameraIndex, getDefaultPictureSize(screenResolution));
+            editor.putString(KEY_PREF_VIDEO_SIZE + cameraIndex, getDefaultVideoSize());
+            editor.putString(KEY_PREF_FOCUS_MODE + cameraIndex, getDefaultFocusMode());
             editor.apply();
         }
-        init(sharedPrefs);
+        init(sharedPrefs, cameraIndex);
     }
 
-    private static void init(SharedPreferences sharedPref) {
-        setPreviewSize(sharedPref.getString(KEY_PREF_PREV_SIZE, ""));
-        setPictureSize(sharedPref.getString(KEY_PREF_PIC_SIZE, ""));
-        setFlashMode(sharedPref.getString(KEY_PREF_FLASH_MODE, ""));
-        setFocusMode(sharedPref.getString(KEY_PREF_FOCUS_MODE, ""));
-        setWhiteBalance(sharedPref.getString(KEY_PREF_WHITE_BALANCE, ""));
-        setSceneMode(sharedPref.getString(KEY_PREF_SCENE_MODE, ""));
-        setExposComp(sharedPref.getString(KEY_PREF_EXPOS_COMP, ""));
-        setJpegQuality(sharedPref.getString(KEY_PREF_JPEG_QUALITY, ""));
-        setGpsData(sharedPref.getBoolean(KEY_PREF_GPS_DATA, false));
+    private static void init(SharedPreferences sharedPref, int cameraIndex) {
+        setPreviewSize(sharedPref.getString(KEY_PREF_PREV_SIZE + cameraIndex, ""));
+        setPictureSize(sharedPref.getString(KEY_PREF_PIC_SIZE + cameraIndex, ""));
+        setFlashMode(sharedPref.getString(KEY_PREF_FLASH_MODE + cameraIndex, ""));
+        setFocusMode(sharedPref.getString(KEY_PREF_FOCUS_MODE + cameraIndex, ""));
+        setWhiteBalance(sharedPref.getString(KEY_PREF_WHITE_BALANCE + cameraIndex, ""));
+        setSceneMode(sharedPref.getString(KEY_PREF_SCENE_MODE + cameraIndex, ""));
+        setExposComp(sharedPref.getString(KEY_PREF_EXPOS_COMP + cameraIndex, ""));
+        setJpegQuality(sharedPref.getString(KEY_PREF_JPEG_QUALITY + cameraIndex, ""));
+        setGpsData(sharedPref.getBoolean(KEY_PREF_GPS_DATA + cameraIndex, false));
         camera.setParameters(parameters);
-        camera.autoFocus(null);
+    }
+
+    public static void setCameraSound(final boolean isSound, final Context context) {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                        audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, isSound);
+                    }
+                }
+        ).start();
+    }
+
+    /**
+     * find best previewSize value,on the basis of camera supported previewSize and screen size
+     *
+     * @param parameters
+     * @param screenResolution
+     * @return
+     */
+    public static Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
+
+        List<Camera.Size> rawSupportedSizes = parameters.getSupportedPreviewSizes();
+        if (rawSupportedSizes == null) {
+            Log.w(TAG, "Device returned no supported preview sizes; using default");
+            Camera.Size defaultSize = parameters.getPreviewSize();
+            if (defaultSize == null) {
+                throw new IllegalStateException("Parameters contained no preview size!");
+            }
+            return new Point(defaultSize.width, defaultSize.height);
+        }
+
+        // Sort by size, descending
+        List<Camera.Size> supportedPreviewSizes = new ArrayList<>(rawSupportedSizes);
+        Collections.sort(supportedPreviewSizes, new Comparator<Camera.Size>() {
+            @Override
+            public int compare(Camera.Size a, Camera.Size b) {
+                int aPixels = a.height * a.width;
+                int bPixels = b.height * b.width;
+                if (bPixels < aPixels) {
+                    return -1;
+                }
+                if (bPixels > aPixels) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        if (Log.isLoggable(TAG, Log.INFO)) {//检查是否可以输出日志
+            StringBuilder previewSizesString = new StringBuilder();
+            for (Camera.Size supportedPreviewSize : supportedPreviewSizes) {
+                previewSizesString.append(supportedPreviewSize.width).append('x')
+                        .append(supportedPreviewSize.height).append(' ');
+            }
+            Log.i(TAG, "Supported preview sizes: " + previewSizesString);
+        }
+
+        double screenAspectRatio;
+        if (screenResolution.x > screenResolution.y) {
+            screenAspectRatio = screenResolution.x / (double) screenResolution.y;//屏幕尺寸比例
+        } else {
+            screenAspectRatio = screenResolution.y / (double) screenResolution.x;//屏幕尺寸比例
+        }
+
+        // Remove sizes that are unsuitable
+        Iterator<Camera.Size> it = supportedPreviewSizes.iterator();
+        while (it.hasNext()) {
+            Camera.Size supportedPreviewSize = it.next();
+            int realWidth = supportedPreviewSize.width;
+            int realHeight = supportedPreviewSize.height;
+            if (realWidth * realHeight < MIN_PREVIEW_PIXELS) {//delete if less than minimum size
+                it.remove();
+                continue;
+            }
+
+            //camera preview width > height
+            boolean isCandidatePortrait = realWidth < realHeight;//width less than height
+            int maybeFlippedWidth = isCandidatePortrait ? realHeight : realWidth;
+            int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;
+            double aspectRatio = maybeFlippedWidth / (double) maybeFlippedHeight;//ratio for camera
+            double distortion = Math.abs(aspectRatio - screenAspectRatio);//returan absolute value
+            if (distortion > MAX_ASPECT_DISTORTION) {//delete if distoraion greater than 0.15
+                it.remove();
+                continue;
+            }
+            if (maybeFlippedWidth == screenResolution.x && maybeFlippedHeight == screenResolution.y) {//serceen size equal to camera supportedPreviewSize
+                Point exactPoint = new Point(realWidth, realHeight);
+                Log.i(TAG, "Found preview size exactly matching screen size: " + exactPoint);
+                return exactPoint;
+            }
+        }
+
+        if (!supportedPreviewSizes.isEmpty()) {//default return first supportedPreviewSize,mean largest
+            Camera.Size largestPreview = supportedPreviewSizes.get(0);
+            Point largestSize = new Point(largestPreview.width, largestPreview.height);
+            Log.i(TAG, "Using largest suitable preview size: " + largestSize);
+            return largestSize;
+        }
+
+        // If there is nothing at all suitable, return current preview size
+        Camera.Size defaultPreview = parameters.getPreviewSize();
+        if (defaultPreview == null) {
+            throw new IllegalStateException("Parameters contained no preview size!");
+        }
+        Point defaultSize = new Point(defaultPreview.width, defaultPreview.height);
+        Log.i(TAG, "No suitable preview sizes, using default: " + defaultSize);
+        return defaultSize;
+    }
+
+    /**
+     * find best pictureSize value,on the basis of camera supported pictureSize and screen size
+     *
+     * @param parameters
+     * @param screenResolution
+     * @return
+     */
+    public static Point findBestPictureSizeValue(Camera.Parameters parameters, Point screenResolution) {
+
+        List<Camera.Size> rawSupportedSizes = parameters.getSupportedPictureSizes();
+        if (rawSupportedSizes == null) {
+            Log.w(TAG, "Device returned no supported preview sizes; using default");
+            Camera.Size defaultSize = parameters.getPictureSize();
+            if (defaultSize == null) {
+                throw new IllegalStateException("Parameters contained no preview size!");
+            }
+            return new Point(defaultSize.width, defaultSize.height);
+        }
+
+        // Sort by size, descending
+        List<Camera.Size> supportedPreviewSizes = new ArrayList<>(rawSupportedSizes);
+        Collections.sort(supportedPreviewSizes, new Comparator<Camera.Size>() {
+            @Override
+            public int compare(Camera.Size a, Camera.Size b) {
+                int aPixels = a.height * a.width;
+                int bPixels = b.height * b.width;
+                if (bPixels < aPixels) {
+                    return -1;
+                }
+                if (bPixels > aPixels) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        if (Log.isLoggable(TAG, Log.INFO)) {//检查是否可以输出日志
+            StringBuilder previewSizesString = new StringBuilder();
+            for (Camera.Size supportedPreviewSize : supportedPreviewSizes) {
+                previewSizesString.append(supportedPreviewSize.width).append('x')
+                        .append(supportedPreviewSize.height).append(' ');
+            }
+            Log.i(TAG, "Supported picture sizes: " + previewSizesString);
+        }
+
+        double screenAspectRatio;
+        if (screenResolution.x > screenResolution.y) {
+            screenAspectRatio = screenResolution.x / (double) screenResolution.y;//屏幕尺寸比例
+        } else {
+            screenAspectRatio = screenResolution.y / (double) screenResolution.x;//屏幕尺寸比例
+        }
+
+        // Remove sizes that are unsuitable
+        Iterator<Camera.Size> it = supportedPreviewSizes.iterator();
+        while (it.hasNext()) {
+            Camera.Size supportedPreviewSize = it.next();
+            int realWidth = supportedPreviewSize.width;
+            int realHeight = supportedPreviewSize.height;
+            if (realWidth * realHeight < MIN_PREVIEW_PIXELS) {//delete if less than minimum size
+                it.remove();
+                continue;
+            }
+
+            //camera preview width > height
+            boolean isCandidatePortrait = realWidth < realHeight;//width less than height
+            int maybeFlippedWidth = isCandidatePortrait ? realHeight : realWidth;
+            int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;
+            double aspectRatio = maybeFlippedWidth / (double) maybeFlippedHeight;//ratio for camera
+            double distortion = Math.abs(aspectRatio - screenAspectRatio);//returan absolute value
+            if (distortion > MAX_ASPECT_DISTORTION) {//delete if distoraion greater than 0.15
+                it.remove();
+                continue;
+            }
+
+            if (maybeFlippedWidth == screenResolution.x && maybeFlippedHeight == screenResolution.y) {//serceen size equal to camera supportedPreviewSize
+                Point exactPoint = new Point(realWidth, realHeight);
+                Log.i(TAG, "Found preview size exactly matching screen size: " + exactPoint);
+                return exactPoint;
+            }
+        }
+
+        if (!supportedPreviewSizes.isEmpty()) {//default return first supportedPreviewSize,mean largest
+            Camera.Size largestPreview = supportedPreviewSizes.get(0);
+            Point largestSize = new Point(largestPreview.width, largestPreview.height);
+            Log.i(TAG, "Using largest suitable preview size: " + largestSize);
+            return largestSize;
+        }
+
+        // If there is nothing at all suitable, return current preview size
+        Camera.Size defaultPreview = parameters.getPictureSize();
+        if (defaultPreview == null) {
+            throw new IllegalStateException("Parameters contained no preview size!");
+        }
+        Point defaultSize = new Point(defaultPreview.width, defaultPreview.height);
+        Log.i(TAG, "No suitable preview sizes, using default: " + defaultSize);
+        return defaultSize;
     }
 
 
@@ -264,14 +485,14 @@ public class CameraUtils {
         return outputMediaFileType;
     }
 
-    private static String getDefaultPreviewSize() {
-        Camera.Size previewSize = parameters.getPreviewSize();
-        return previewSize.width + "x" + previewSize.height;
+    private static String getDefaultPreviewSize(Point screenResolution) {
+        Point previewSizeOnScreen = findBestPreviewSizeValue(parameters, screenResolution);
+        return previewSizeOnScreen.x + "x" + previewSizeOnScreen.y;
     }
 
-    private static String getDefaultPictureSize() {
-        Camera.Size pictureSize = parameters.getPictureSize();
-        return pictureSize.width + "x" + pictureSize.height;
+    private static String getDefaultPictureSize(Point screenResolution) {
+        Point pictureSizeOnScreen  = findBestPictureSizeValue(parameters, screenResolution);
+        return pictureSizeOnScreen .x + "x" + pictureSizeOnScreen .y;
     }
 
     private static String getDefaultVideoSize() {
@@ -283,6 +504,8 @@ public class CameraUtils {
         List<String> supportedFocusModes = parameters.getSupportedFocusModes();
         if (supportedFocusModes.contains("continuous-picture")) {
             return "continuous-picture";
+        } else if (supportedFocusModes.size() > 0) {
+            return supportedFocusModes.get(0);
         }
         return "continuous-video";
     }
@@ -302,15 +525,21 @@ public class CameraUtils {
     }
 
     public static void setFlashMode(String value) {
-        parameters.setFlashMode(value);
+        if (!TextUtils.isEmpty(value)) {
+            parameters.setFlashMode(value);
+        }
     }
 
     public static void setWhiteBalance(String value) {
-        parameters.setWhiteBalance(value);
+        if (!TextUtils.isEmpty(value)) {
+            parameters.setWhiteBalance(value);
+        }
     }
 
     public static void setSceneMode(String value) {
-        parameters.setSceneMode(value);
+        if (!TextUtils.isEmpty(value)) {
+            parameters.setSceneMode(value);
+        }
     }
 
     public static void setExposComp(String value) {

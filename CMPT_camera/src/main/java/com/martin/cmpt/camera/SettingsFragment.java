@@ -86,14 +86,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private void stringListToListPreference(List<String> list, String key) {
         ListPreference listPref = (ListPreference) getPreferenceScreen().findPreference(key);
-        if (null == list) {
-            CharSequence[] sequences = {"无"};
-            listPref.setEntries(sequences);
-            listPref.setEntryValues(sequences);
-        } else {
-            CharSequence[] charSeq = list.toArray(new CharSequence[list.size()]);
-            listPref.setEntries(charSeq);
-            listPref.setEntryValues(charSeq);
+        if (null != listPref) {
+            if (null == list) {
+                CharSequence[] sequences = {"无"};
+                listPref.setEntries(sequences);
+                listPref.setEntryValues(sequences);
+            } else {
+                CharSequence[] charSeq = list.toArray(new CharSequence[list.size()]);
+                listPref.setEntries(charSeq);
+                listPref.setEntryValues(charSeq);
+            }
         }
     }
 

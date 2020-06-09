@@ -56,6 +56,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             getFragmentManager().beginTransaction().replace(R.id.camera_preview, settingsFragment)
                     .addToBackStack(null)
                     .commit();
+//            Intent it = new Intent(this, CameraActivity.class);
+//            startActivity(it);
         } else if (v.getId() == R.id.camera_takephoto) {
             CameraUtils.takePicture(mediaPreview);
         } else if (v.getId() == R.id.camera_switch) {

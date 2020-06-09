@@ -40,4 +40,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
     implementation project(':COMMON_core')
+
 }
