@@ -188,6 +188,10 @@ public class CameraUtils {
         return null != camera ? camera.getParameters() : null;
     }
 
+    public static int getCameraIndex() {
+        return cameraIndex;
+    }
+
     public static void setDefault(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String valPreviewSize = sharedPrefs.getString(KEY_PREF_PREV_SIZE + cameraIndex, null);
