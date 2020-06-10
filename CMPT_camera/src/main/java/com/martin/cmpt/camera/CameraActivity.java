@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 public class CameraActivity extends FragmentActivity {
     private FragPageAdapter adapter;
-    private MenuScrollTitle menu;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private List<Fragment> fragments=new ArrayList<>();

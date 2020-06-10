@@ -134,7 +134,6 @@ public class CameraUtils {
             camera.setPreviewDisplay(preview.getHolder());
             camera.startPreview();
             setRotation(context);
-            camera.autoFocus(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
