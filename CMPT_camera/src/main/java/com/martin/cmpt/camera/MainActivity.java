@@ -53,11 +53,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.camera_settings) {
-            getFragmentManager().beginTransaction().replace(R.id.camera_preview, settingsFragment)
+/*            getFragmentManager().beginTransaction().replace(R.id.camera_preview, settingsFragment)
                     .addToBackStack(null)
-                    .commit();
-//            Intent it = new Intent(this, CameraActivity.class);
-//            startActivity(it);
+                    .commit();*/
+            Intent it = new Intent(this, CameraActivity.class);
+            startActivity(it);
         } else if (v.getId() == R.id.camera_takephoto) {
             CameraUtils.takePicture(mediaPreview);
         } else if (v.getId() == R.id.camera_switch) {

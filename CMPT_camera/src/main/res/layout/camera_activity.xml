@@ -1,33 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <ImageView
+        android:id="@+id/camera_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@drawable/camera_icon_close"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/black"/>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout_container"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@android:color/black"
-        app:tabPaddingStart="23dp"
-        app:tabPaddingEnd="23dp"
-        app:tabGravity="center"
-        app:tabSelectedTextColor="#4991E1"
-        app:tabTextColor="#FFFFFF"
-        app:tabMode="fixed"
+    <ImageView
+        android:id="@+id/camera_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:src="@drawable/camera_icon_flash_forbidden"
         />
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/camera_bottom_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="152dp">
+
+        <com.martin.cmpt.camera.widget.AutoCenterHorizontalScrollView
+            android:id="@+id/camera_mode_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            />
+        <ImageView
+            android:id="@+id/camera_takephoto"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/camera_take_photo_btn"/>
+        <ImageView
+            android:id="@+id/camera_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/camera_takephoto"
+            android:layout_marginLeft="46dp"
+            android:padding="10dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/camera_icon_switch_camera"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_below="@+id/camera_close"
+        android:layout_above="@+id/camera_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
