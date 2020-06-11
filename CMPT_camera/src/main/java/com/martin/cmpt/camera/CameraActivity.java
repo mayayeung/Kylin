@@ -30,6 +30,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private static int lastPermissionsRequestCode;
     private String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
+    private ImageView photoView;
     private CameraPreview cameraPreview;
 
     @Override
@@ -44,10 +45,15 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
     private void initView() {
         frameLayout = findViewById(R.id.camera_preview);
+        photoView = findViewById(R.id.camera_photo);
         ImageView takePhoto = findViewById(R.id.camera_takephoto);
         ImageView switchCamera = findViewById(R.id.camera_switch);
+        ImageView close = findViewById(R.id.camera_close);
+        ImageView flash = findViewById(R.id.camera_flash);
         takePhoto.setOnClickListener(this);
         switchCamera.setOnClickListener(this);
+        close.setOnClickListener(this);
+        flash.setOnClickListener(this);
     }
 
     private void initHorizontal() {
@@ -143,9 +149,14 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.camera_takephoto) {
-//            CameraUtils.takePicture(mediaPreview);
+            CameraUtils.takePicture(photoView);
+            photoView.setVisibility(View.VISIBLE);
         } else if (v.getId() == R.id.camera_switch) {
             CameraUtils.switchCamera(this, cameraPreview);
+        } else if (v.getId() == R.id.camera_close) {
+            finish();
+        } else if (v.getId() == R.id.camera_flash) {
+
         }
     }
 }

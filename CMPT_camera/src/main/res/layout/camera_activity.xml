@@ -60,4 +60,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <ImageView
+        android:id="@+id/camera_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/camera_close"
+        android:layout_above="@+id/camera_bottom_layout"
+        android:visibility="gone"/>
+
+
 </RelativeLayout>

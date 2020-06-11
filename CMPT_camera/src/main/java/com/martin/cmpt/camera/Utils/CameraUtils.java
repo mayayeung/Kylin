@@ -449,6 +449,7 @@ public class CameraUtils {
                     fos.write(data);
                     fos.close();
 
+                    mediaPreview.setScaleType(ImageView.ScaleType.FIT_XY);
                     mediaPreview.setImageURI(outputMediaFileUri);
                     camera.startPreview();
                 } catch (FileNotFoundException e) {
