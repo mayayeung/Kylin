@@ -41,6 +41,7 @@ import java.util.List;
 public class CameraUtils {
     private static final String TAG = CameraUtils.class.getSimpleName();
     private static final int MIN_PREVIEW_PIXELS = 480 * 320; // normal screen
+    private static final double CAMERA_HEIGHT_WIDTH_RATIO = 4 / 3; // normal screen
     private static final double MAX_ASPECT_DISTORTION = 0.15;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -199,14 +200,9 @@ public class CameraUtils {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String valPreviewSize = sharedPrefs.getString(KEY_PREF_PREV_SIZE + cameraIndex, null);
         if (valPreviewSize == null) {
-            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            Point screenResolution = new Point();
-            display.getSize(screenResolution);//得到屏幕的尺寸，单位是像素
-
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(KEY_PREF_PREV_SIZE + cameraIndex, getDefaultPreviewSize(screenResolution));
-            editor.putString(KEY_PREF_PIC_SIZE + cameraIndex, getDefaultPictureSize(screenResolution));
+            editor.putString(KEY_PREF_PREV_SIZE + cameraIndex, getDefaultPreviewSize());
+            editor.putString(KEY_PREF_PIC_SIZE + cameraIndex, getDefaultPictureSize());
             editor.putString(KEY_PREF_VIDEO_SIZE + cameraIndex, getDefaultVideoSize());
             editor.putString(KEY_PREF_FOCUS_MODE + cameraIndex, getDefaultFocusMode());
             editor.apply();
@@ -243,11 +239,9 @@ public class CameraUtils {
      * find best previewSize value,on the basis of camera supported previewSize and screen size
      *
      * @param parameters
-     * @param screenResolution
      * @return
      */
-    public static Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
-
+    public static Point findBestPreviewSizeValue(Camera.Parameters parameters) {
         List<Camera.Size> rawSupportedSizes = parameters.getSupportedPreviewSizes();
         if (rawSupportedSizes == null) {
             Log.w(TAG, "Device returned no supported preview sizes; using default");
@@ -284,12 +278,7 @@ public class CameraUtils {
             Log.i(TAG, "Supported preview sizes: " + previewSizesString);
         }
 
-        double screenAspectRatio;
-        if (screenResolution.x > screenResolution.y) {
-            screenAspectRatio = screenResolution.x / (double) screenResolution.y;//屏幕尺寸比例
-        } else {
-            screenAspectRatio = screenResolution.y / (double) screenResolution.x;//屏幕尺寸比例
-        }
+        double screenAspectRatio = CAMERA_HEIGHT_WIDTH_RATIO;
 
         // Remove sizes that are unsuitable
         Iterator<Camera.Size> it = supportedPreviewSizes.iterator();
@@ -311,11 +300,6 @@ public class CameraUtils {
             if (distortion > MAX_ASPECT_DISTORTION) {//delete if distoraion greater than 0.15
                 it.remove();
                 continue;
-            }
-            if (maybeFlippedWidth == screenResolution.x && maybeFlippedHeight == screenResolution.y) {//serceen size equal to camera supportedPreviewSize
-                Point exactPoint = new Point(realWidth, realHeight);
-                Log.i(TAG, "Found preview size exactly matching screen size: " + exactPoint);
-                return exactPoint;
             }
         }
 
@@ -340,11 +324,9 @@ public class CameraUtils {
      * find best pictureSize value,on the basis of camera supported pictureSize and screen size
      *
      * @param parameters
-     * @param screenResolution
      * @return
      */
-    public static Point findBestPictureSizeValue(Camera.Parameters parameters, Point screenResolution) {
-
+    public static Point findBestPictureSizeValue(Camera.Parameters parameters) {
         List<Camera.Size> rawSupportedSizes = parameters.getSupportedPictureSizes();
         if (rawSupportedSizes == null) {
             Log.w(TAG, "Device returned no supported preview sizes; using default");
@@ -381,12 +363,7 @@ public class CameraUtils {
             Log.i(TAG, "Supported picture sizes: " + previewSizesString);
         }
 
-        double screenAspectRatio;
-        if (screenResolution.x > screenResolution.y) {
-            screenAspectRatio = screenResolution.x / (double) screenResolution.y;//屏幕尺寸比例
-        } else {
-            screenAspectRatio = screenResolution.y / (double) screenResolution.x;//屏幕尺寸比例
-        }
+        double screenAspectRatio = CAMERA_HEIGHT_WIDTH_RATIO;
 
         // Remove sizes that are unsuitable
         Iterator<Camera.Size> it = supportedPreviewSizes.iterator();
@@ -410,11 +387,6 @@ public class CameraUtils {
                 continue;
             }
 
-            if (maybeFlippedWidth == screenResolution.x && maybeFlippedHeight == screenResolution.y) {//serceen size equal to camera supportedPreviewSize
-                Point exactPoint = new Point(realWidth, realHeight);
-                Log.i(TAG, "Found preview size exactly matching screen size: " + exactPoint);
-                return exactPoint;
-            }
         }
 
         if (!supportedPreviewSizes.isEmpty()) {//default return first supportedPreviewSize,mean largest
@@ -493,14 +465,14 @@ public class CameraUtils {
         return outputMediaFileType;
     }
 
-    private static String getDefaultPreviewSize(Point screenResolution) {
-        Point previewSizeOnScreen = findBestPreviewSizeValue(parameters, screenResolution);
+    private static String getDefaultPreviewSize() {
+        Point previewSizeOnScreen = findBestPreviewSizeValue(parameters);
         return previewSizeOnScreen.x + "x" + previewSizeOnScreen.y;
     }
 
-    private static String getDefaultPictureSize(Point screenResolution) {
-        Point pictureSizeOnScreen  = findBestPictureSizeValue(parameters, screenResolution);
-        return pictureSizeOnScreen .x + "x" + pictureSizeOnScreen .y;
+    private static String getDefaultPictureSize() {
+        Point pictureSizeOnScreen = findBestPictureSizeValue(parameters);
+        return pictureSizeOnScreen.x + "x" + pictureSizeOnScreen.y;
     }
 
     private static String getDefaultVideoSize() {
