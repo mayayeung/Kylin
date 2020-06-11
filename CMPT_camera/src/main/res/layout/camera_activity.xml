@@ -42,8 +42,18 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:background="@drawable/camera_take_photo_btn"/>
+
         <ImageView
-            android:id="@+id/camera_switch"
+            android:id="@+id/camera_next"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/camera_icon_mark_next"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/camera_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/camera_takephoto"
@@ -51,6 +61,16 @@
             android:padding="10dp"
             android:layout_marginTop="60dp"
             android:src="@drawable/camera_icon_switch_camera"/>
+
+        <ImageView
+            android:id="@+id/camera_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="46dp"
+            android:layout_marginTop="60dp"
+            android:layout_toLeftOf="@+id/camera_takephoto"
+            android:padding="10dp"
+            android:src="@drawable/camera_icon_back_to_preview" />
     </RelativeLayout>
 
     <FrameLayout

@@ -26,12 +26,23 @@ import java.util.List;
  * Description:
  */
 public class CameraActivity extends FragmentActivity implements View.OnClickListener {
+    private final static int CAMERA_MODE_COMMON = 0; //普通模式
+    private final static int CAMERA_MODE_EXERCISE = 1; //拍题模式
+    private final static int CAMERA_STEP_PREVIEW = 0; //预览界面
+    private final static int CAMERA_STEP_MARK = 1; //标注界面
+    private final static int CAMERA_STEP_CONFIRM = 2; //确认界面
     public final static int PERMISSION_REQUESTCODE_CAMERA = 0x99;
     private static int lastPermissionsRequestCode;
     private String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
     private ImageView photoView;
+    private ImageView left;
+    private ImageView right;
+    private ImageView next;
+    private ImageView takePhoto;
     private CameraPreview cameraPreview;
+    private int cameraMode;
+    private int step;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +57,19 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private void initView() {
         frameLayout = findViewById(R.id.camera_preview);
         photoView = findViewById(R.id.camera_photo);
-        ImageView takePhoto = findViewById(R.id.camera_takephoto);
-        ImageView switchCamera = findViewById(R.id.camera_switch);
+        takePhoto = findViewById(R.id.camera_takephoto);
+        left = findViewById(R.id.camera_left);
+        right = findViewById(R.id.camera_right);
+        next = findViewById(R.id.camera_next);
         ImageView close = findViewById(R.id.camera_close);
         ImageView flash = findViewById(R.id.camera_flash);
         takePhoto.setOnClickListener(this);
-        switchCamera.setOnClickListener(this);
+        left.setOnClickListener(this);
+        right.setOnClickListener(this);
+        next.setOnClickListener(this);
         close.setOnClickListener(this);
         flash.setOnClickListener(this);
+        step = CAMERA_STEP_PREVIEW;
     }
 
     private void initHorizontal() {
@@ -69,7 +85,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         autoCenterHorizontalScrollView.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
             @Override
             public void onSelectChange(int position) {
-                ToastUtils.showToastOnce(names.get(position));
+                cameraMode = position;
             }
         });
         autoCenterHorizontalScrollView.setCurrentIndex(0);
@@ -150,13 +166,30 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.camera_takephoto) {
             CameraUtils.takePicture(photoView);
-            photoView.setVisibility(View.VISIBLE);
-        } else if (v.getId() == R.id.camera_switch) {
+            step = cameraMode == CAMERA_MODE_COMMON ? CAMERA_STEP_CONFIRM : CAMERA_STEP_MARK;
+            refreshView(cameraMode, step);
+        } else if (v.getId() == R.id.camera_left) {
+            if (step == CAMERA_STEP_MARK) {//
+                step = CAMERA_STEP_PREVIEW;
+                refreshView(cameraMode, step);
+            } else if (step == CAMERA_STEP_CONFIRM) {
+                if (cameraMode == CAMERA_MODE_COMMON) {
+                    step = CAMERA_STEP_PREVIEW;
+                    refreshView(cameraMode, step);
+                } else {
+                    step = CAMERA_STEP_MARK;
+                    refreshView(cameraMode, step);
+                }
+            }
             CameraUtils.switchCamera(this, cameraPreview);
         } else if (v.getId() == R.id.camera_close) {
             finish();
         } else if (v.getId() == R.id.camera_flash) {
 
         }
+    }
+
+    private void refreshView(int cameraMode, int step) {
+
     }
 }
