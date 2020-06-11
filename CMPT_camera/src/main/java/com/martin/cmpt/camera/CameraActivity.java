@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.martin.cmpt.camera.Utils.CameraUtils;
 import com.martin.cmpt.camera.widget.AutoCenterHorizontalScrollView;
@@ -43,8 +44,8 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
     private void initView() {
         frameLayout = findViewById(R.id.camera_preview);
-        Button takePhoto = findViewById(R.id.camera_takephoto);
-        Button switchCamera = findViewById(R.id.camera_switch);
+        ImageView takePhoto = findViewById(R.id.camera_takephoto);
+        ImageView switchCamera = findViewById(R.id.camera_switch);
         takePhoto.setOnClickListener(this);
         switchCamera.setOnClickListener(this);
     }

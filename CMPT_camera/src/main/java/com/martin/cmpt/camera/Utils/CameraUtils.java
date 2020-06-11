@@ -117,6 +117,10 @@ public class CameraUtils {
         }
     }
 
+    public static boolean isBackCamera() {
+        return cameraIndex == backCameraIndex;
+    }
+
     public static void switchCamera(Context context, CameraPreview preview) {
         cameraIndex = (cameraIndex == frontCameraIndex ? backCameraIndex : frontCameraIndex);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_PREF_CAMERA_INDEX, cameraIndex).commit();
