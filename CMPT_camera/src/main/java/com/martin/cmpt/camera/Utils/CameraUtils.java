@@ -14,11 +14,13 @@ import android.util.Log;
 import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martin.cmpt.camera.CameraPreview;
+import com.martin.cmpt.camera.callback.NextStepListener;
 import com.martin.core.utils.ScreenUtils;
 import com.martin.core.utils.ToastUtils;
 
@@ -407,7 +409,7 @@ public class CameraUtils {
     }
 
 
-    public static void takePicture(final ImageView mediaPreview) {
+    public static void takePicture(final ImageView mediaPreview, final NextStepListener listener) {
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -424,6 +426,7 @@ public class CameraUtils {
                     mediaPreview.setScaleType(ImageView.ScaleType.FIT_XY);
                     mediaPreview.setImageURI(outputMediaFileUri);
                     camera.startPreview();
+                    listener.onNext();
                 } catch (FileNotFoundException e) {
                     Log.d(TAG, "File not found: " + e.getMessage());
                 } catch (IOException e) {
