@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -45,6 +48,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private int cameraMode;
     private int step;
     private boolean clipContent = true;//裁剪内容
+    private GestureDetector.OnGestureListener gestureListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,22 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         initView();
         initHorizontal();
         refreshView(cameraMode, CAMERA_STEP_PREVIEW);
-        //check camere permissions
+        gestureListener = new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                float x = e2.getX() - e1.getX();
+                autoCenterHorizontalScrollView.setCurrentIndex(x > 0 ? 0 : 1);
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                if (null != cameraPreview) {
+                    cameraPreview.handleFocusMetering(e);
+                }
+                return true;
+            }
+        };
         checkPermissions(PERMISSION_REQUESTCODE_CAMERA, permissions_camera);
     }
 
@@ -161,7 +180,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     }
 
     private void initCamera() {
-        cameraPreview = new CameraPreview(this);
+        cameraPreview = new CameraPreview(this,gestureListener);
         frameLayout.addView(cameraPreview);
     }
 
@@ -214,6 +233,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
             finish();
         } else if (v.getId() == R.id.camera_flash) {
             ToastUtils.showToastOnce("闪光灯啊");
+            autoCenterHorizontalScrollView.setCurrentIndex(1);
         }
     }
 

@@ -5,10 +5,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import com.martin.cmpt.camera.Utils.CameraUtils;
 
 import java.io.IOException;
@@ -23,11 +23,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private static final String TAG = "camera_setting";
     private SurfaceHolder holder;
     private float oldDist = 1f;
+    private GestureDetector gestureDetector;
 
-    public CameraPreview(Context context) {
+    public CameraPreview(Context context, GestureDetector.OnGestureListener gestureListener) {
         super(context);
         holder = getHolder();
         holder.addCallback(this);
+        gestureDetector = new GestureDetector(context, gestureListener);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (CameraUtils.isBackCamera()) {
             Camera camera = CameraUtils.getCameraInstance(getContext());
             if (event.getPointerCount() == 1) {
-                handleFocusMetering(event, camera);
+                gestureDetector.onTouchEvent(event);
             }else {
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_POINTER_DOWN:
@@ -111,7 +113,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         return x;
     }
 
-    private void handleFocusMetering(MotionEvent event, Camera camera) {
+    public void handleFocusMetering(MotionEvent event) {
+        Camera camera = CameraUtils.getCameraInstance(getContext());
         int viewWidth = getWidth();
         int viewHeight = getHeight();
         Rect focusRect = calculateTapArea(event.getX(), event.getY(), 1f, viewWidth, viewHeight);
