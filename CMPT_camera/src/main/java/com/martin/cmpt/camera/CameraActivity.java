@@ -1,27 +1,37 @@
 package com.martin.cmpt.camera;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.martin.cmpt.camera.Utils.BitmapUtils;
 import com.martin.cmpt.camera.Utils.CameraUtils;
 import com.martin.cmpt.camera.callback.NextStepListener;
 import com.martin.cmpt.camera.widget.AutoCenterHorizontalScrollView;
 import com.martin.cmpt.camera.widget.HorizontalAdapter;
 import com.martin.core.utils.ToastUtils;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.pqpo.smartcropperlib.view.CropImageView;
 
 
 /**
@@ -40,6 +50,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
     private ImageView photoView;
+    private CropImageView cropImageView;
     private ImageView left;
     private ImageView right;
     private ImageView next;
@@ -79,6 +90,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private void initView() {
         frameLayout = findViewById(R.id.camera_preview);
         photoView = findViewById(R.id.camera_photo);
+        cropImageView = findViewById(R.id.crop_imageview);
         takePhoto = findViewById(R.id.camera_takephoto);
         left = findViewById(R.id.camera_left);
         right = findViewById(R.id.camera_right);
@@ -188,11 +200,20 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.camera_takephoto) {
             if (step == CAMERA_STEP_PREVIEW) {
-                CameraUtils.takePicture(photoView, new NextStepListener() {
+                CameraUtils.takePicture(new NextStepListener() {
                     @Override
-                    public void onNext() {
-                        photoView.setVisibility(View.VISIBLE);
+                    public void onNext(Uri fileUri) {
                         frameLayout.setVisibility(View.GONE);
+                        if (cameraMode == CAMERA_MODE_COMMON) {
+                            cropImageView.setVisibility(View.GONE);
+                            photoView.setVisibility(View.VISIBLE);
+                            photoView.setScaleType(ImageView.ScaleType.FIT_XY);
+                            photoView.setImageURI(fileUri);
+                        } else {
+                            cropImageView.setVisibility(View.VISIBLE);
+                            photoView.setVisibility(View.GONE);
+                            setDefaultClipRange(fileUri);
+                        }
                     }
                 });
             }
@@ -238,7 +259,19 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     }
 
     private void doClipRange(boolean clipContent) {
-
+        Bitmap clipImg = cropImageView.crop();
+        File file = null;
+        try {
+            file = new File(new URI(CameraUtils.getOutputMediaFileUri().toString()));
+            if (clipImg != null && file != null) {
+                photoView.setImageBitmap(clipImg);
+                photoView.setVisibility(View.VISIBLE);
+                cropImageView.setVisibility(View.GONE);
+                BitmapUtils.saveImage(clipImg, file);
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -249,6 +282,26 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         right.setImageResource(clipContent ? R.drawable.camera_icon_mark_zoom_out : R.drawable.camera_icon_mark_zoom_in);
         ToastUtils.showToastOnce("裁剪：" + (markContent ? "内容" : "边框"));
     }
+
+    private void setDefaultClipRange(Uri fileUri) {
+        ContentResolver cr = getContentResolver();
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(cr.openInputStream(fileUri), new Rect(), options);
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = BitmapUtils.calculateSampleSize(options);
+            Bitmap selectedBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri), new Rect(), options);
+            if (selectedBitmap != null) {
+                cropImageView.setImageToCrop(selectedBitmap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     /**
      * 拍题模式确认，返回到拍题模式的标记
@@ -287,6 +340,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         } else { //预览模式
             autoCenterHorizontalScrollView.setVisibility(View.VISIBLE);
             photoView.setVisibility(View.GONE);
+            cropImageView.setVisibility(View.GONE);
             frameLayout.setVisibility(View.VISIBLE);
             left.setVisibility(View.GONE);
             takePhoto.setVisibility(View.VISIBLE);
@@ -296,4 +350,6 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         }
 
     }
+
+
 }

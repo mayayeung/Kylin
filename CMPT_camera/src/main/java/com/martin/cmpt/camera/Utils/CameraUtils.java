@@ -409,7 +409,7 @@ public class CameraUtils {
     }
 
 
-    public static void takePicture(final ImageView mediaPreview, final NextStepListener listener) {
+    public static void takePicture(final NextStepListener listener) {
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
@@ -423,10 +423,8 @@ public class CameraUtils {
                     fos.write(data);
                     fos.close();
 
-                    mediaPreview.setScaleType(ImageView.ScaleType.FIT_XY);
-                    mediaPreview.setImageURI(outputMediaFileUri);
                     camera.startPreview();
-                    listener.onNext();
+                    listener.onNext(outputMediaFileUri);
                 } catch (FileNotFoundException e) {
                     Log.d(TAG, "File not found: " + e.getMessage());
                 } catch (IOException e) {

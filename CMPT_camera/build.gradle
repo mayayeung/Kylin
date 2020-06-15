@@ -33,6 +33,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
 
 }
 
@@ -40,5 +44,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
     implementation project(':COMMON_core')
-
+    api 'com.github.pqpo:SmartCropper:v2.1.3'
 }

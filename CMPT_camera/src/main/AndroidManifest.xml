@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.martin.cmpt.camera" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.martin.cmpt.camera">
     <!-- 打开Camera的权限 -->
+    <uses-sdk tools:overrideLibrary="me.pqpo.smartcropperlib"/>
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.autofocus" />

@@ -88,5 +88,16 @@
         android:layout_above="@+id/camera_bottom_layout"
         android:visibility="gone"/>
 
-
+    <me.pqpo.smartcropperlib.view.CropImageView
+        android:id="@+id/crop_imageview"
+        android:layout_below="@+id/camera_close"
+        android:layout_above="@+id/camera_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:civShowGuideLine="false"
+        app:civShowEdgeMidPoint="true"
+        app:civLineColor="@color/colorPrimary"
+        app:civMagnifierCrossColor="@color/colorPrimaryDark"
+        android:visibility="gone"/>
 </RelativeLayout>
