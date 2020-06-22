@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="transparent">#00000000</color>
     <color name="app_color">#4991E1</color>
+    <color name="light_color">#979797</color>
+    <color name="dark_color">#4A90E2</color>
 </resources>
