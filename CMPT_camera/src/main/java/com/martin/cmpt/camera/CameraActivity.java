@@ -50,6 +50,8 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private String[] permissions_camera = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private FrameLayout frameLayout;
     private ImageView photoView;
+    private ImageView flash;
+    private ImageView close;
     private CropImageView cropImageView;
     private ImageView left;
     private ImageView right;
@@ -95,8 +97,8 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         left = findViewById(R.id.camera_left);
         right = findViewById(R.id.camera_right);
         next = findViewById(R.id.camera_next);
-        ImageView close = findViewById(R.id.camera_close);
-        ImageView flash = findViewById(R.id.camera_flash);
+        close = findViewById(R.id.camera_close);
+        flash = findViewById(R.id.camera_flash);
         takePhoto.setOnClickListener(this);
         left.setOnClickListener(this);
         right.setOnClickListener(this);
@@ -259,12 +261,13 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
                 step = CAMERA_STEP_CONFIRM;
                 refreshView(cameraMode, step);
                 doClipRange(clipContent);
+            } else {//确认
+                ToastUtils.showToastOnce("确认按钮点击");
             }
         } else if (v.getId() == R.id.camera_close) {
             finish();
         } else if (v.getId() == R.id.camera_flash) {
             ToastUtils.showToastOnce("闪光灯啊");
-            autoCenterHorizontalScrollView.setCurrentIndex(1);
         }
     }
 
@@ -325,6 +328,8 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
             autoCenterHorizontalScrollView.setVisibility(View.GONE);
             left.setVisibility(View.VISIBLE);
             right.setVisibility(View.VISIBLE);
+            flash.setVisibility(View.INVISIBLE);
+            close.setVisibility(View.INVISIBLE);
             if (cameraMode == CAMERA_MODE_COMMON && step == CAMERA_STEP_CONFIRM) {//普通模式，确认界面
                 left.setImageResource(R.drawable.camera_icon_back_to_preview);
                 right.setImageResource(R.drawable.camera_icon_mark_begin);
@@ -348,6 +353,8 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
                 next.setVisibility(View.VISIBLE);
             }
         } else { //预览模式
+            flash.setVisibility(View.VISIBLE);
+            close.setVisibility(View.VISIBLE);
             autoCenterHorizontalScrollView.setVisibility(View.VISIBLE);
             photoView.setVisibility(View.GONE);
             cropImageView.setVisibility(View.GONE);
