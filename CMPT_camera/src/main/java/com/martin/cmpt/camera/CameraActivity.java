@@ -118,6 +118,16 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         autoCenterHorizontalScrollView.setOnSelectChangeListener(new AutoCenterHorizontalScrollView.OnSelectChangeListener() {
             @Override
             public void onSelectChange(int position) {
+                if (position == CAMERA_MODE_EXERCISE) {//拍题模式，强制使用后置摄像头
+                    if (!CameraUtils.isBackCamera()) {
+                        CameraUtils.autoSwitchCamera(CameraActivity.this, cameraPreview);
+                    }
+                } else {//普通模式
+                    if (CameraUtils.isNeedSwitch()) {
+                        CameraUtils.autoSwitchCamera(CameraActivity.this, cameraPreview);
+                    }
+                }
+
                 cameraMode = position;
                 refreshView(cameraMode, step);
             }

@@ -65,6 +65,7 @@ public class CameraUtils {
     private static int frontCameraIndex;
     private static int backCameraIndex;
     private static int cameraIndex;
+    private static boolean needSwitch;
     private static OrientationEventListener listener;
 
     public static Camera getCameraInstance(Context context) {
@@ -122,6 +123,15 @@ public class CameraUtils {
 
     public static boolean isBackCamera() {
         return cameraIndex == backCameraIndex;
+    }
+
+    public static boolean isNeedSwitch() {
+        return needSwitch;
+    }
+
+    public static void autoSwitchCamera(Context context, CameraPreview preview) {
+        needSwitch = !needSwitch;
+        switchCamera(context, preview);
     }
 
     public static void switchCamera(Context context, CameraPreview preview) {
