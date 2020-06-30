@@ -132,8 +132,8 @@ public class CameraUtils {
 //            preview.getHolder().removeCallback(preview);
 //            camera.setPreviewCallback(null);
             camera.stopPreview();
-            camera.release();
-            camera = null;
+            release();
+
         }
         getCameraInstance(context);
         setDefault(context);
@@ -185,9 +185,14 @@ public class CameraUtils {
     }
 
     public static void release() {
-        listener.disable();
-        listener = null;
-        camera = null;
+        if (null != listener) {
+            listener.disable();
+            listener = null;
+        }
+        if (null != camera) {
+            camera.release();
+            camera = null;
+        }
     }
 
     public static Camera.Parameters getParameters() {
