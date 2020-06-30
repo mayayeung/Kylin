@@ -46,11 +46,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (CameraUtils.isBackCamera()) {
-            Camera camera = CameraUtils.getCameraInstance(getContext());
-            if (event.getPointerCount() == 1) {
-                gestureDetector.onTouchEvent(event);
-            }else {
+        Camera camera = CameraUtils.getCameraInstance(getContext());
+        if (event.getPointerCount() == 1) {
+            gestureDetector.onTouchEvent(event);
+        }else {
+            if (CameraUtils.isBackCamera()) {
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_POINTER_DOWN:
                         oldDist = getFingerSpacing(event);
@@ -67,6 +67,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
         }
+
         return true;
     }
 

@@ -78,7 +78,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if (null != cameraPreview) {
+                if (CameraUtils.isBackCamera() && null != cameraPreview) {
                     cameraPreview.handleFocusMetering(e);
                 }
                 return true;
