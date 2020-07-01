@@ -23,6 +23,7 @@ import com.martin.cmpt.camera.Utils.CameraUtils;
 import com.martin.cmpt.camera.callback.NextStepListener;
 import com.martin.cmpt.camera.widget.AutoCenterHorizontalScrollView;
 import com.martin.cmpt.camera.widget.HorizontalAdapter;
+import com.martin.cmpt.camera.widget.MyCropImageView;
 import com.martin.core.utils.ToastUtils;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private ImageView photoView;
     private ImageView flash;
     private ImageView close;
-    private CropImageView cropImageView;
+    private MyCropImageView cropImageView;
     private ImageView left;
     private ImageView right;
     private ImageView next;
@@ -277,6 +278,9 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
         try {
             file = new File(new URI(CameraUtils.getOutputMediaFileUri().toString()));
             if (clipImg != null && file != null) {
+                if (clipImg.getWidth() < clipImg.getHeight()) {
+                    photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                }
                 photoView.setImageBitmap(clipImg);
                 photoView.setVisibility(View.VISIBLE);
                 cropImageView.setVisibility(View.GONE);
@@ -294,6 +298,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private void switchClipRange(boolean markContent) {
         right.setImageResource(clipContent ? R.drawable.camera_icon_mark_zoom_out : R.drawable.camera_icon_mark_zoom_in);
         ToastUtils.showToastOnce("裁剪：" + (markContent ? "内容" : "边框"));
+        cropImageView.setFullImgCrop();
     }
 
     private void setDefaultClipRange(Uri fileUri) {

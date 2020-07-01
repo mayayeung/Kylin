@@ -43,7 +43,7 @@ import java.util.List;
 public class CameraUtils {
     private static final String TAG = CameraUtils.class.getSimpleName();
     private static final int MIN_PREVIEW_PIXELS = 480 * 320; // normal screen
-    private static final double CAMERA_HEIGHT_WIDTH_RATIO = 4 / 3; // normal screen
+    private static final double CAMERA_HEIGHT_WIDTH_RATIO = (double) 4 / 3; // normal screen
     private static final double MAX_ASPECT_DISTORTION = 0.15;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;

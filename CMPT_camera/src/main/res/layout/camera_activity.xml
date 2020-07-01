@@ -88,8 +88,9 @@
         android:layout_above="@+id/camera_bottom_layout"
         android:visibility="gone"/>
 
-    <me.pqpo.smartcropperlib.view.CropImageView
+    <com.martin.cmpt.camera.widget.MyCropImageView
         android:id="@+id/crop_imageview"
+        android:padding="20dp"
         android:layout_below="@+id/camera_close"
         android:layout_above="@+id/camera_bottom_layout"
         android:layout_width="match_parent"
