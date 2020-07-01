@@ -63,6 +63,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     private int step;
     private boolean clipContent = true;//裁剪内容
     private GestureDetector.OnGestureListener gestureListener;
+    private Bitmap selectedBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +253,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
             }
             if (step == CAMERA_STEP_CLIP) {
                 clipContent = !clipContent;
-                switchClipRange(clipContent);
+                switchClipRange();
             }
             if (step == CAMERA_STEP_CONFIRM) {
                 ToastUtils.showToastOnce("开始标注!" + CameraUtils.getOutputMediaFileUri());
@@ -293,12 +294,16 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
 
     /**
      * 拍题模式，裁剪范围
-     * @param markContent
      */
-    private void switchClipRange(boolean markContent) {
+    private void switchClipRange() {
         right.setImageResource(clipContent ? R.drawable.camera_icon_mark_zoom_out : R.drawable.camera_icon_mark_zoom_in);
-        ToastUtils.showToastOnce("裁剪：" + (markContent ? "内容" : "边框"));
-        cropImageView.setFullImgCrop();
+        if (clipContent) {
+            if (selectedBitmap != null) {
+                cropImageView.setImageToCrop(selectedBitmap);
+            }
+        } else {
+            cropImageView.setFullImgCrop();
+        }
     }
 
     private void setDefaultClipRange(Uri fileUri) {
@@ -309,7 +314,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
             BitmapFactory.decodeStream(cr.openInputStream(fileUri), new Rect(), options);
             options.inJustDecodeBounds = false;
             options.inSampleSize = BitmapUtils.calculateSampleSize(options);
-            Bitmap selectedBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri), new Rect(), options);
+            selectedBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(fileUri), new Rect(), options);
             if (selectedBitmap != null) {
                 cropImageView.setImageToCrop(selectedBitmap);
             }
@@ -325,7 +330,13 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
      * 拍题模式确认，返回到拍题模式的标记
      */
     private void backToMark() {
-        ToastUtils.showToastOnce("返回标记页面");
+        cropImageView.setVisibility(View.VISIBLE);
+        photoView.setVisibility(View.GONE);
+        right.setImageResource(R.drawable.camera_icon_mark_zoom_out);
+        if (selectedBitmap != null) {
+            cropImageView.setImageToCrop(selectedBitmap);
+        }
+
     }
 
     private void refreshView(int cameraMode, int step) {
