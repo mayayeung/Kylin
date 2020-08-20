@@ -3,13 +3,20 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="X5 Webview"/>
+        android:textSize="16sp"
+        android:text="X5 Webview"
+        android:layout_gravity="center_horizontal"/>
+
+    <com.martin.core.ui.views.X5WebView
+        android:id="@+id/x5_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

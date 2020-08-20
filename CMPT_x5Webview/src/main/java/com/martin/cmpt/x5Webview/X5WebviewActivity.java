@@ -8,12 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.martin.core.ui.views.X5WebView;
+
 public class X5WebviewActivity extends FragmentActivity {
+    X5WebView x5WebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.x5webview_activity_main);
+        x5WebView = findViewById(R.id.x5_webview);
+        x5WebView.loadUrl("https://www.baidu.com");
+        x5WebView.addJavascriptInterface(new JSCallFunction(), "jsBridge");
     }
 
     public static void launchSelf(Context context) {
