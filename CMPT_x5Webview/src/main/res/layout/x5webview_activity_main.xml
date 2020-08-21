@@ -7,16 +7,43 @@
     >
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:text="X5 Webview"
         android:layout_gravity="center_horizontal"/>
 
-    <com.martin.core.ui.views.X5WebView
-        android:id="@+id/x5_webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/translucent">
+
+
+        <com.martin.core.ui.views.NetErrorView
+            android:id="@+id/netErrorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+
+        <com.martin.core.ui.views.X5WebView
+            android:id="@+id/x5_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="0dp"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_drawable" />
+
+    </RelativeLayout>
 
 </LinearLayout>

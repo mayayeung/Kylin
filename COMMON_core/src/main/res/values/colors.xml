@@ -7,4 +7,8 @@
     <color name="app_color">#4991E1</color>
     <color name="light_color">#979797</color>
     <color name="dark_color">#4A90E2</color>
+
+    <color name="translucent">#33000000</color>
+    <!-- 背景色 -->
+    <color name="background">#F5F5F5</color>
 </resources>

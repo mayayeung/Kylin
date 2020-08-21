@@ -1,4 +1,4 @@
-package com.martin.cmpt.player.utils;
+package com.martin.core.utils;
 
 import android.app.Activity;
 import android.os.Build;

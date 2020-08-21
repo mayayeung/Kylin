@@ -1,10 +1,12 @@
-package com.martin.cmpt.player.utils;
+package com.martin.cmpt.x5Webview.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.webkit.ValueCallback;
-import android.webkit.WebView;
+
+import com.martin.core.ui.views.X5WebView;
+import com.martin.core.utils.MiscUtils;
+import com.tencent.smtt.sdk.ValueCallback;
 
 import java.lang.ref.WeakReference;
 
@@ -14,10 +16,10 @@ import java.lang.ref.WeakReference;
  */
 public class JSCallBack {
     private final static String TAG = JSCallBack.class.getSimpleName();
-    private WeakReference<WebView> webViewRef;
+    private WeakReference<X5WebView> webViewRef;
     private final String callbackId;
 
-    public JSCallBack(String callbackId, WebView webView) {
+    public JSCallBack(String callbackId, X5WebView webView) {
         this.callbackId = callbackId;
         if (null != webView) {
             this.webViewRef = new WeakReference<>(webView);
@@ -28,7 +30,7 @@ public class JSCallBack {
      * webview 调用 JS 方法
      * @param js
      */
-    private void callJS(String js) {
+    public void callJS(String js) {
         if (null == webViewRef || null == webViewRef.get()) {
             Log.e(TAG, "webview is null");
             return;
