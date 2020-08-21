@@ -5,10 +5,10 @@ if(score>60){
     document.write("加油!");
 }
 
-window.invokeFunc = function(){
+function invokeFunc(){
     alert("调用函数了");
 }
 
-function nativeToast(){
-    window.jsBridge.showToast();
+function nativeToast(message){
+    window.jsBridge.showToast(message);
 }
