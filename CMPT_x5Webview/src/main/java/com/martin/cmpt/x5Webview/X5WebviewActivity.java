@@ -3,8 +3,10 @@ package com.martin.cmpt.x5Webview;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
 public class X5WebviewActivity extends FragmentActivity implements View.OnClickListener {
+    private static final String TAG = X5WebviewActivity.class.getSimpleName();
     private ProgressBar mPageLoadingProgressBar = null;
     private NetErrorView netErrorView;
     X5WebView x5WebView;
@@ -45,7 +48,7 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
         title.setOnClickListener(this);
         netErrorView.setOnRefreshListener(() -> x5WebView.reload());
 
-        x5WebView.setWebViewClient(new WebViewClient(){
+        x5WebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
                 super.onPageStarted(webView, s, bitmap);
@@ -64,9 +67,22 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
                     netErrorView.show();
                 }
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                Uri parse = Uri.parse(url);
+                String scheme = parse.getScheme();
+                if (HybridConfig.SCHEME.equals(scheme)) {
+                    String host = parse.getHost();
+                    String param = parse.getQueryParameter(HybridConfig.GET_PARAM);
+                    String callback = parse.getQueryParameter(HybridConfig.GET_CALLBACK);
+                    Log.e(TAG, "host---" + host + "  param---" + param + "  callback---" + callback);
+                }
+                return false;
+            }
         });
 
-        x5WebView.setWebChromeClient(new WebChromeClient(){
+        x5WebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView webView, int newProgress) {
                 mPageLoadingProgressBar.setProgress(newProgress);
@@ -78,7 +94,7 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
             }
         });
 
-        x5WebView.addJavascriptInterface(new JSCallFunction(), "jsBridge");
+        x5WebView.addJavascriptInterface(new JSCallFunction(x5WebView), "jsBridge");
         x5WebView.loadUrl("file:///android_asset/ui.html");
     }
 
@@ -89,7 +105,7 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        x5WebView.loadUrl("javascript:invokeFunc()");
-
+//        x5WebView.loadUrl("javascript:invokeFunc()");
+        new JSCallBack(null, x5WebView).callJS("javascript:nativeToast('abcdefghijklmn')");
     }
 }

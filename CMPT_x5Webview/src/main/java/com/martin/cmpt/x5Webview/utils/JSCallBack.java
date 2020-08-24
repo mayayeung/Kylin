@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.martin.core.config.AppConfig;
 import com.martin.core.ui.views.X5WebView;
 import com.martin.core.utils.MiscUtils;
 import com.tencent.smtt.sdk.ValueCallback;
@@ -39,10 +40,15 @@ public class JSCallBack {
         if (null == context || MiscUtils.isDestroy((Activity) context)) {
             Log.e(TAG, "webview's context is null");
         } else {
-            webViewRef.get().evaluateJavascript(js, new ValueCallback<String>() {
+            AppConfig.postOnUiThread(new Runnable() {
                 @Override
-                public void onReceiveValue(String value) {
-                    Log.i(TAG, "receive js value is :" + value);
+                public void run() {
+                    webViewRef.get().evaluateJavascript(js, new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+                            Log.i(TAG, "receive js value is :" + value);
+                        }
+                    });
                 }
             });
         }
