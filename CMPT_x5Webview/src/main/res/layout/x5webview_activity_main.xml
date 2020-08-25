@@ -7,11 +7,39 @@
     >
 
     <TextView
-        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:text="X5 Webview"
+        android:text="native call JS:"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/addValue"
+        android:padding="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="addValue(3,4)"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/append"
+        android:padding="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="append('I','and','you')"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:text="JS call native:"
         android:layout_gravity="center_horizontal"/>
 
 
@@ -29,8 +57,8 @@
             android:visibility="gone" />
 
 
-        <com.martin.core.ui.views.X5WebView
-            android:id="@+id/x5_webview"
+        <com.martin.core.ui.views.dsbridge.DWebView
+            android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false" />

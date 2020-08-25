@@ -6,21 +6,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.martin.cmpt.x5Webview.utils.JSCallBack;
 import com.martin.core.ui.views.NetErrorView;
-import com.martin.core.ui.views.X5WebView;
+import com.martin.core.ui.views.dsbridge.DWebView;
+import com.martin.core.ui.views.dsbridge.OnReturnValue;
 import com.martin.core.utils.NetWorkUtils;
 import com.martin.core.utils.ToastUtils;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -29,26 +24,32 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
     private static final String TAG = X5WebviewActivity.class.getSimpleName();
     private ProgressBar mPageLoadingProgressBar = null;
     private NetErrorView netErrorView;
-    X5WebView x5WebView;
+    DWebView webView;
     TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.x5webview_activity_main);
+        initNativeView();
         initWebview();
+    }
+
+    private void initNativeView() {
+        findViewById(R.id.addValue).setOnClickListener(this);
+        findViewById(R.id.append).setOnClickListener(this);
     }
 
     private void initWebview() {
         title = findViewById(R.id.title);
         mPageLoadingProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
         netErrorView = findViewById(R.id.netErrorView);
-        x5WebView = findViewById(R.id.x5_webview);
+        webView = findViewById(R.id.web_view);
 
         title.setOnClickListener(this);
-        netErrorView.setOnRefreshListener(() -> x5WebView.reload());
+        netErrorView.setOnRefreshListener(() -> webView.reload());
 
-        x5WebView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView webView, String s, Bitmap bitmap) {
                 super.onPageStarted(webView, s, bitmap);
@@ -72,17 +73,11 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
             public boolean shouldOverrideUrlLoading(WebView webView, String url) {
                 Uri parse = Uri.parse(url);
                 String scheme = parse.getScheme();
-                if (HybridConfig.SCHEME.equals(scheme)) {
-                    String host = parse.getHost();
-                    String param = parse.getQueryParameter(HybridConfig.GET_PARAM);
-                    String callback = parse.getQueryParameter(HybridConfig.GET_CALLBACK);
-                    Log.e(TAG, "host---" + host + "  param---" + param + "  callback---" + callback);
-                }
                 return false;
             }
         });
 
-        x5WebView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView webView, int newProgress) {
                 mPageLoadingProgressBar.setProgress(newProgress);
@@ -94,8 +89,9 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
             }
         });
 
-        x5WebView.addJavascriptInterface(new JSCallFunction(x5WebView), "jsBridge");
-        x5WebView.loadUrl("file:///android_asset/ui.html");
+        webView.setWebContentsDebuggingEnabled(true);
+        webView.addJavascriptObject(new JsApi(), null);
+        webView.loadUrl("file:///android_asset/dsbridge.html");
     }
 
     public static void launchSelf(Context context) {
@@ -105,7 +101,23 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-//        x5WebView.loadUrl("javascript:invokeFunc()");
-        new JSCallBack(null, x5WebView).callJS("javascript:nativeToast('abcdefghijklmn')");
+        switch (v.getId()) {
+            case R.id.addValue:
+                webView.callHandler("addValue", new Object[]{3, 4}, new OnReturnValue<Integer>() {
+                    @Override
+                    public void onValue(Integer retValue) {
+                        ToastUtils.showToastOnce(retValue.toString());
+                    }
+                });
+                break;
+            case R.id.append:
+                webView.callHandler("append", new Object[]{"I", "and", "you"}, new OnReturnValue<String>() {
+                    @Override
+                    public void onValue(String retValue) {
+                        ToastUtils.showToastOnce(retValue);
+                    }
+                });
+                break;
+        }
     }
 }
