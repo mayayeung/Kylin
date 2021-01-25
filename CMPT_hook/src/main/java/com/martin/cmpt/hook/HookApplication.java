@@ -7,4 +7,12 @@ import com.martin.core.base.BaseApplication;
  * Description:
  */
 public class HookApplication extends BaseApplication {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        HookUtil hookUtil = new HookUtil();
+        hookUtil.hookStartActivity(this);
+        hookUtil.hookHookMh(this);
+    }
 }
