@@ -7,12 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.martin.core.ui.views.NetErrorView;
 import com.martin.core.ui.views.dsbridge.DWebView;
 import com.martin.core.ui.views.dsbridge.OnReturnValue;
 import com.martin.core.utils.NetWorkUtils;
+import com.martin.core.utils.TextUtils;
 import com.martin.core.utils.ToastUtils;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
@@ -26,6 +29,8 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
     private NetErrorView netErrorView;
     DWebView webView;
     TextView title;
+    EditText urlEt;
+    Button urlGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,17 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
     private void initNativeView() {
         findViewById(R.id.addValue).setOnClickListener(this);
         findViewById(R.id.append).setOnClickListener(this);
+        urlEt = findViewById(R.id.url_et);
+        urlGo = findViewById(R.id.url_go);
+        urlGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = urlEt.getText().toString();
+                if (!TextUtils.isEmpty(url)) {
+                    webView.loadUrl(url);
+                }
+            }
+        });
     }
 
     private void initWebview() {
@@ -92,6 +108,7 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
         webView.setWebContentsDebuggingEnabled(true);
         webView.addJavascriptObject(new JsApi(), null);
         webView.loadUrl("file:///android_asset/dsbridge.html");
+        webView.loadUrl("https://www.wuhaneduyun.cn/");
     }
 
     public static void launchSelf(Context context) {
