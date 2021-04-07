@@ -1,8 +1,10 @@
 package com.martin.kylin;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.martin.core.base.BaseApplication;
+import com.martin.core.utils.ToastUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +19,7 @@ public class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("djz", "process name :" + getCurProcessName());
+        Log.e("djz", "is main process :" + isMainProcess(this));
     }
 
     @Override
@@ -42,5 +44,18 @@ public class MyApplication extends BaseApplication {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private boolean isMainProcess(Context context) {
+        try {
+            String mainProcessName = context.getPackageName();
+            String curProcessName = getCurProcessName();
+            Log.d("djz", "main process name :" + mainProcessName + ", current process name :" + curProcessName);
+            return mainProcessName.equalsIgnoreCase(curProcessName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

@@ -9,7 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".PlayerActivity" />
+        <activity android:name=".PlayerActivity"
+            android:process=":remote" />
 
     </application>
 </manifest>
