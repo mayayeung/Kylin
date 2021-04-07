@@ -5,7 +5,7 @@ def releaseTime() {
 }
 
 def transform(String targetStr) {
-    return new String(targetStr.getBytes("iso8859-1"), "GBK")
+    return new String(targetStr.getBytes("ISO8859-1"), "utf-8")
 }
 
 android {
