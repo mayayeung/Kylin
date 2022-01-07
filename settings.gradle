@@ -1,2 +1,2 @@
 include ':CMPT_hook'
-include ':app', ':JAVA-demo', ':COMMON_core', ':CMPT_player', ':CMPT_camera', ':CMPT_x5Webview'
+include ':app', ':JAVA-demo', ':COMMON_core', ':CMPT_demo', ':CMPT_camera', ':CMPT_x5Webview'

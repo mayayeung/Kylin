@@ -1,25 +1,22 @@
-package com.martin.cmpt.player;
+package com.martin.cmpt.demo;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
-public class PlayerActivity extends FragmentActivity {
+public class ScanActivity extends FragmentActivity {
     private LinearLayout mainLayout;
     private View scanView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_activity_main);
+        setContentView(R.layout.scan_activity);
         mainLayout = findViewById(R.id.main_layout);
         scanView = findViewById(R.id.scan_view);
 //        LayoutInflater inflater = LayoutInflater.from(this);
@@ -27,7 +24,7 @@ public class PlayerActivity extends FragmentActivity {
     }
 
     public static void launchSelf(Context context) {
-        Intent intent = new Intent(context, PlayerActivity.class);
+        Intent intent = new Intent(context, ScanActivity.class);
         context.startActivity(intent);
     }
 

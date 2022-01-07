@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.martin.cmpt.player">
+    package="com.martin.cmpt.demo">
 
     <application
         android:allowBackup="true"
@@ -9,8 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".PlayerActivity"
-            android:process=":remote" />
+        <activity android:name=".DemoActivity" />
 
     </application>
 </manifest>
