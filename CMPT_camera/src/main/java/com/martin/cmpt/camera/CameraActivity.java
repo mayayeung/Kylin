@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -194,6 +195,7 @@ public class CameraActivity extends FragmentActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("ddd", "CameraActivity---task id: " + getTaskId());
         if (null == cameraPreview) {
             initCamera();
         }
