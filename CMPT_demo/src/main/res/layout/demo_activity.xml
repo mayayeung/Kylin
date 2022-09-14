@@ -6,6 +6,7 @@
     >
 
     <TextView
+        android:id="@+id/test_https"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -13,8 +14,8 @@
         android:text="DEMO ACTIVITY"
         android:textSize="40sp"/>
 
-    <com.martin.cmpt.demo.utils.SimpleDoodleView
+    <!--<com.martin.cmpt.demo.utils.SimpleDoodleView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"/>-->
 
 </FrameLayout>
