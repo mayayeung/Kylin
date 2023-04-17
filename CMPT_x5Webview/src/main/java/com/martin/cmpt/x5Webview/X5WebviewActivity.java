@@ -1,12 +1,17 @@
 package com.martin.cmpt.x5Webview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -40,6 +45,10 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
         initWebview();
     }
 
+
+
+    private static boolean isImmersive = false;
+
     private void initNativeView() {
         findViewById(R.id.addValue).setOnClickListener(this);
         findViewById(R.id.append).setOnClickListener(this);
@@ -48,10 +57,12 @@ public class X5WebviewActivity extends FragmentActivity implements View.OnClickL
         urlGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isImmersive = !isImmersive;
                 String url = urlEt.getText().toString();
                 if (!TextUtils.isEmpty(url)) {
                     webView.loadUrl(url);
                 }
+                StatusBarUtils.setAppImmersive(X5WebviewActivity.this, isImmersive, !isImmersive, true, Color.GREEN);
             }
         });
     }

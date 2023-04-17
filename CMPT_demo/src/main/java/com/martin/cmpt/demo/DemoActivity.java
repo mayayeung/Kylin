@@ -25,7 +25,7 @@ public class DemoActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_activity);
-        findViewById(R.id.test_https).setOnClickListener(this);
+//        findViewById(R.id.test_https).setOnClickListener(this);
     }
 
     public static void launchSelf(Context context) {
@@ -38,12 +38,12 @@ public class DemoActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View v) {
         ToastUtils.showToastOnce("haha");
 
-        new Thread(new Runnable() {
+/*        new Thread(new Runnable() {
             @Override
             public void run() {
                 sendRequest("https://www.bing.com");
             }
-        }).start();
+        }).start();*/
 
     }
 
