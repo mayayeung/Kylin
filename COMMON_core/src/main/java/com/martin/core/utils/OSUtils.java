@@ -1,4 +1,4 @@
-package com.martin.cmpt.x5Webview;
+package com.martin.core.utils;
 
 import android.os.Build;
 import android.text.TextUtils;

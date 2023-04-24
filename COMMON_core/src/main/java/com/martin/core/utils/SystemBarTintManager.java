@@ -1,4 +1,4 @@
-package com.martin.cmpt.x5Webview;
+package com.martin.core.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
