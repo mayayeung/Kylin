@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <SurfaceView
+        android:id="@+id/surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ImageView
+        android:id="@+id/btn_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/camera_icon_flash_off"/>
+
+    <ImageView
+        android:id="@+id/btn_swith_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/camera_icon_switch_camera"/>
+
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:background="#66000000"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_gravity="bottom">
+        <TextView
+            android:id="@+id/tv_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:text="点击开始录像，最长5分钟"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format="%s"
+            android:visibility="gone"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:drawableStart="@drawable/record_dot"
+            android:drawablePadding="6dp"/>
+        
+        <ImageView
+            android:id="@+id/btn_record"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/icon_video_record_1"/>
+
+        <ImageView
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_toStartOf="@id/btn_record"
+            android:layout_marginEnd="56dp"
+            android:src="@drawable/ic_camera_back"/>
+
+        <TextView
+            android:id="@+id/btn_sel_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/btn_record"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="50dp"
+            android:drawableTop="@drawable/ic_sel_video"
+            android:drawablePadding="4dp"
+            android:text="选择视频"
+            android:textSize="11sp"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+</FrameLayout>

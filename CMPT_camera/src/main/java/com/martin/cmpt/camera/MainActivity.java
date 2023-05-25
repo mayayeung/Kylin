@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.camera_settings) {
-            Intent it = new Intent(this, CameraActivity.class);
+            Intent it = new Intent(this, VideoRecordActivity.class);
             startActivity(it);
         }
     }
