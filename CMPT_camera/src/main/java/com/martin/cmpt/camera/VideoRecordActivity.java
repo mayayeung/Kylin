@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.martin.core.utils.CheckUtils;
 import com.martin.core.utils.TimeUtil;
 import com.martin.core.utils.ToastUtils;
 
@@ -372,8 +373,13 @@ public class VideoRecordActivity extends FragmentActivity implements View.OnClic
     }
 
     private float calcPreviewPercent() {
-        float d = screenHeight;
-        return d / screenWidth;
+        if (CheckUtils.checkIsPad(this)) {//平板
+            Log.d(TAG, "is pad: true");
+            return (float) screenWidth / screenHeight;
+        }else {//手机
+            Log.d(TAG, "is pad: false");
+            return (float) screenHeight / screenWidth;
+        }
     }
 
     // 获取预览的最大分辨率
@@ -406,10 +412,13 @@ public class VideoRecordActivity extends FragmentActivity implements View.OnClic
 
     private Camera.Size findSizeFromList(List<Camera.Size> supportedPictureSizes, Camera.Size size) {
         Camera.Size s = null;
+        Log.i(TAG, "previewSize : w =" + size.width + "; h = " + size.height);
         if (supportedPictureSizes != null && !supportedPictureSizes.isEmpty()) {
             for (Camera.Size su : supportedPictureSizes) {
+                Log.i(TAG, "findSizeFromList : w =" + su.width + "; h = " + su.height);
                 if (size.width == su.width && size.height == su.height) {
                     s = su;
+                    Log.i(TAG, "find size form list, w = " + su.width + "; h = " + su.height);
                     break;
                 }
             }
@@ -421,7 +430,8 @@ public class VideoRecordActivity extends FragmentActivity implements View.OnClic
     private Camera.Size getPictureMaxSize(List<Camera.Size> l, Camera.Size size) {
         Camera.Size s = null;
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i).width >= size.width && l.get(i).height >= size.width
+            Log.i(TAG, "getPictureMaxSize : w =" + l.get(i).width + "; h = " + l.get(i).height);
+            if (l.get(i).width >= size.width && l.get(i).height >= size.height
                     && l.get(i).height != l.get(i).width) {
                 if (s == null) {
                     s = l.get(i);
