@@ -86,7 +86,14 @@ public class BitmapUtils {
             public void run() {
                 String fileName = System.currentTimeMillis() + ".jpg";
                 File file = new File(BASEPATH + "/", fileName);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
                 try {
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
                     FileOutputStream fos = new FileOutputStream(file);
                     bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                     fos.flush();
