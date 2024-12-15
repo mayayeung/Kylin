@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="red">#fe4343</color> <!-- ee3b2b 红色 ed0000 -->
+    <color name="text_hint">#b3b3b3</color> <!-- hint色 -->
+
+    <color name="app_tab_text_color">#0079FF</color>
+    <color name="app_main_color">#1385FF</color>
+</resources>

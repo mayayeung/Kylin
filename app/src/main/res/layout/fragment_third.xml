@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:TitleActionBar="http://schemas.android.com/apk/res-auto"
+    android:background="#F5F5F5"
+    android:orientation="vertical">
+
+    <com.martin.core.ui.views.TitleActionBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        TitleActionBar:isImmersionBar="true"
+        TitleActionBar:layout_type="one"
+        TitleActionBar:title="第三页" />
+
+    <ScrollView
+        android:layout_below="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

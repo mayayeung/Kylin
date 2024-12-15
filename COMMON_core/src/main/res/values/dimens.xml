@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="crumb_view_padding">12dp</dimen>
+    <dimen name="top_actionbar_height">@dimen/y54</dimen>
+    <dimen name="title_icon_size">20dp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="spash_width">378dp</dimen>
+    <dimen name="spash_height">672dp</dimen>
+    <dimen name="top_bar_height">@dimen/y54</dimen>
+</resources>

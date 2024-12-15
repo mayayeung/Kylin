@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--左侧图标和文本，中间为页面标题-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/top_actionbar_height">
+
+    <LinearLayout
+        android:id="@+id/back_linear"
+        android:layout_width="44dp"
+        android:layout_height="@dimen/top_actionbar_height"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@mipmap/v6_common_back" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:maxWidth="180dp"
+        android:singleLine="true"
+        android:textColor="@color/app_main_title_color"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/more_operate"
+        android:layout_width="44dp"
+        android:layout_height="@dimen/top_actionbar_height"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:src="@drawable/more_new" />
+
+    </LinearLayout>
+
+</RelativeLayout>

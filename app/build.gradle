@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("yyyy_MM_dd", TimeZone.getTimeZone("UTC"))
+}
+
+def transform(String targetStr) {
+    return new String(targetStr.getBytes("ISO8859-1"), "utf-8")
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.martin.kylin"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        flavorDimensions("environment","money")
+
+        splits {
+            abi {
+                enable true
+                reset()
+                include 'armeabi-v7a', 'arm64-v8a'
+                universalApk false
+            }
+        }
+    }
+
+    //编译选项
+    compileOptions {
+        //使用jdk1.8 编译
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        config {
+            keyAlias keyAlias_
+            keyPassword keyPassword_
+            storeFile file(storeFile_)
+            storePassword storePassword_
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true // 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+    }
+
+    productFlavors {
+
+        online {//正式线
+            dimension "environment"
+            buildConfigField "boolean", "developMode", "false"
+            resValue "string", "app_name", transform(APP_NAME_ONLINE)
+        }
+
+        tline {//测试线
+            dimension "environment"
+            applicationIdSuffix '.tline'
+            buildConfigField "boolean", "developMode", "true"
+            resValue "string", "app_name", transform(APP_NAME_TLINE)
+        }
+
+        vip{//收费版本
+            dimension "money"
+            buildConfigField("boolean", "feeMode", "true")
+        }
+
+        free{//免费版本
+            dimension "money"
+            buildConfigField("boolean", "feeMode", "false")
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${variant.productFlavors[0].name}_${output.getFilter(com.android.build.OutputFile.ABI)}_v${variant.versionName}_${releaseTime()}.apk".toLowerCase()
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':COMMON_core')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-v4'
+        all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
+    if (!CMPT_DEMO_IS_RUN_ALONE.toBoolean()) {
+        implementation project(':CMPT_demo')
+    }
+
+    implementation ('com.google.android.material:material:1.2.0') {
+        exclude group: 'androidx.activity', module: 'activity'
+    }
+}

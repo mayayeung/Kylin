@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="light_color">#979797</color>
+    <color name="dark_color">#4A90E2</color>
+    <color name="white">#ffffff</color> <!-- 白色 -->
+    <color name="translucent">#33000000</color>
+    <!-- 背景色 -->
+    <color name="background">#F5F5F5</color>
+
+    <color name="black_alpha_70">#80000000</color> <!-- 70%透明黑 -->
+
+
+
+    <color name="app_main_title_color">#ffffff</color>
+    <color name="bacground">#F5F5F5</color> <!-- #efeff4 ebeaea ebeaea -->
+
+    <color name="font_lighter">#9B9B9B</color> <!-- adadad -->
+    <color name="font_lighter2">#aaaaaa</color> <!-- adadad -->
+
+    <color name="black">#000000</color>
+    <color name="app_main_color2">#1385FF</color>
+
+    <color name="app_main_color">#1E1E1E</color>
+    <color name="app_color">#4991E1</color>
+
+</resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/top_actionbar_height">
+
+    <com.martin.core.ui.views.AutoScaleTextView
+        android:id="@+id/tab_item"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:autoSizeMinTextSize="2sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:paddingTop="4dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/tab_text_selector"
+        android:textSize="@dimen/sp_11"
+        app:minTextSize="2sp" />
+
+    <View
+        android:id="@+id/center_flag"
+        android:layout_width="12dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"/>
+
+    <com.martin.core.ui.views.AutoScaleTextView
+        android:id="@+id/tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/center_flag"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/reddot"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <com.martin.core.ui.views.AutoScaleTextView
+        android:id="@+id/tipDot"
+        android:layout_width="9dp"
+        android:layout_height="9dp"
+        android:layout_alignLeft="@+id/tab_item"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/red_spot"
+        android:gravity="center"
+        android:padding="1dp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/tab_setting_selector"
+        android:visibility="gone" />
+
+</RelativeLayout>

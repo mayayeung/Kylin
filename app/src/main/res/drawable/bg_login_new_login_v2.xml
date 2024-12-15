@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Create on 2018-1-17 上午8:47
+  ~ FileName:bg_article_preview_template.xml
+  ~ Author:Li Shuxun
+  ~ Contact:17786472919
+  ~ Email: lishuxun@whty.com.cn
+  -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#1385FF" />
+    <corners android:radius="8dp" />
+</shape>

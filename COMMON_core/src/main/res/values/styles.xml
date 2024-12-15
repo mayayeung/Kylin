@@ -1,0 +1,76 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="colorPrimary">@color/app_main_color</item>
+        <item name="colorPrimaryDark">@color/app_main_color</item>
+        <item name="colorAccent">@color/app_color</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <declare-styleable name="CrumbViewAttrs">
+        <attr name="light_color" format="color"/>
+        <attr name="dark_color" format="color"/>
+        <attr name="padding" format="dimension"/>
+    </declare-styleable>
+
+    <!--仿微信字体大小调整 FontSizeView-->
+    <declare-styleable name="FontSizeView">
+        <attr name="lineWidth" format="dimension|reference" />
+        <attr name="lineColor" format="color|reference" />
+        <attr name="totalCount" format="integer" />
+        <attr name="circleColor" format="color|reference" />
+        <attr name="circleRadius" format="dimension|reference" />
+
+        <attr name="textFontColor" format="color|reference" />
+        <attr name="smallSize" format="integer" />
+        <attr name="standerSize" format="integer" />
+        <attr name="bigSize" format="integer" />
+        <attr name="defaultPosition" format="integer" />
+    </declare-styleable>
+
+    <style name="Default.SwipeBack.Archives.NoTitleBar" parent="@style/Default.SwipeBack">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimation.Default</item>
+    </style>
+
+    <style name="Default.SwipeBack" parent="@style/Default">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="Default" parent="@style/AppTheme">
+        <item name="android:textColorPrimaryInverse">@android:color/black</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@style/actAnimation</item>
+    </style>
+
+    <style name="actAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_new</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_back</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_finish</item>
+        <item name="android:taskOpenEnterAnimation">@anim/activity_new</item>
+        <item name="android:taskOpenExitAnimation">@anim/activity_out</item>
+        <item name="android:taskCloseEnterAnimation">@anim/activity_back</item>
+        <item name="android:taskCloseExitAnimation">@anim/activity_finish</item>
+    </style>
+
+    <style name="WindowAnimation.Default" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_switch_style01_open_enter
+        </item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_switch_style01_open_exit
+        </item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_switch_style01_close_enter
+        </item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_switch_style01_close_exit
+        </item>
+    </style>
+</resources>

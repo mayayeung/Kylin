@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><!--左侧图标和文本，中间为页面标题-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/top_actionbar_height">
+
+    <LinearLayout
+        android:id="@+id/back_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/top_actionbar_height"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/x15">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/x22"
+            android:layout_height="@dimen/x22"
+            android:background="@mipmap/v6_common_back" />
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/x8"
+            android:textColor="@color/app_main_title_color"
+            android:textSize="@dimen/x17"
+            android:visibility="gone"
+            tools:text="" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxWidth="@dimen/x180"
+        android:singleLine="true"
+        android:textColor="@color/app_main_title_color"
+        android:textSize="@dimen/x18" />
+
+    <TextView
+        android:id="@+id/tv_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/top_actionbar_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="right|center_vertical"
+        android:maxWidth="@dimen/x100"
+        android:minWidth="@dimen/x60"
+        android:paddingRight="@dimen/x15"
+        android:textColor="@color/app_main_title_color"
+        android:textSize="@dimen/x16"
+        tools:text="管理" />
+
+
+</RelativeLayout>

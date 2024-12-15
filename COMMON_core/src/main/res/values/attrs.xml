@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NoDefaultPaddingTextView">
+        <attr name="no_defalut_padding" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="AutoScaleTextView">
+        <attr name="autoScaleTextViewStyle" format="reference" />
+        <attr name="minTextSize" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="RoundedImageView">
+        <attr name="riv_corner_radius" format="dimension" />
+        <attr name="riv_border_width" format="dimension" />
+        <attr name="riv_border_color" format="color" />
+        <attr name="riv_mutate_background" format="boolean" />
+        <attr name="riv_oval" format="boolean" />
+        <attr name="android:scaleType" />
+        <attr name="riv_tile_mode">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+        <attr name="riv_tile_mode_x">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+        <attr name="riv_tile_mode_y">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="PullToRefresh">
+
+        <!-- A drawable to use as the background of the Refreshable View -->
+        <attr name="ptrRefreshableViewBackground" format="reference|color" />
+
+        <!-- A drawable to use as the background of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderBackground" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextColor" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views Sub Header -->
+        <attr name="ptrHeaderSubTextColor" format="reference|color" />
+
+        <!-- Mode of Pull-to-Refresh that should be used -->
+        <attr name="ptrMode">
+            <flag name="disabled" value="0x0" />
+            <flag name="pullFromStart" value="0x1" />
+            <flag name="pullFromEnd" value="0x2" />
+            <flag name="both" value="0x3" />
+            <flag name="manualOnly" value="0x4" />
+
+            <!-- These last two are depreacted -->
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+        </attr>
+
+        <!-- Whether the Indicator overlay(s) should be used -->
+        <attr name="ptrShowIndicator" format="reference|boolean" />
+
+        <!-- Drawable to use as Loading Indicator. Changes both Header and Footer. -->
+        <attr name="ptrDrawable" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableStart" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableEnd" format="reference" />
+
+        <!-- Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. -->
+        <attr name="ptrOverScroll" format="reference|boolean" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextAppearance" format="reference" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header -->
+        <attr name="ptrSubHeaderTextAppearance" format="reference" />
+
+        <!-- Style of Animation should be used displayed when pulling. -->
+        <attr name="ptrAnimationStyle">
+            <flag name="rotate" value="0x0" />
+            <flag name="flip" value="0x1" />
+        </attr>
+
+        <!-- Whether the user can scroll while the View is Refreshing -->
+        <attr name="ptrScrollingWhileRefreshingEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+
+
+
+
+
+        -->
+        <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+
+
+
+
+
+        -->
+        <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
+
+        <!-- BELOW HERE ARE DEPRECEATED. DO NOT USE. -->
+        <attr name="ptrAdapterViewBackground" format="reference|color" />
+        <attr name="ptrDrawableTop" format="reference" />
+        <attr name="ptrDrawableBottom" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="LinearListView">
+        <attr name="android:entries" />
+        <attr name="dividerThickness" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="TipRadioButton">
+        <attr name="mBtnNor" format="integer" />
+        <attr name="mBtnSel" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="CustomShapeImageView">
+        <attr name="shape" format="integer">
+            <enum name="circle" value="1" />
+            <enum name="rectangle" value="2" />
+            <enum name="svg" value="3" />
+        </attr>
+        <attr name="svg_raw_resource" format="reference" />
+        <attr name="png_resource" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="AnimImageView">
+        <attr name="flag" format="integer">
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <attr name="anim_list_resource" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="CircleProgressBar">
+        <attr name="ringWidth" format="dimension" />
+        <attr name="ringNormalColor" format="color" />
+        <attr name="ringProgressColor" format="color" />
+        <attr name="progressTextSize" format="dimension" />
+        <attr name="progressTextColor" format="color" />
+        <attr name="progressTextVisibility" format="boolean" />
+        <attr name="maxProgress" format="integer" />
+        <attr name="circleStyle">
+            <enum name="STROKE" value="0" />
+            <enum name="FILL" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="CircularProgress">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="color0" format="color" />
+        <attr name="color1" format="dimension" />
+        <attr name="color2" format="dimension" />
+        <attr name="color3" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="SwipeBackLayout">
+        <attr name="edge_size" format="dimension" />
+        <attr name="edge_flag">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="shadow_left" format="reference" />
+        <attr name="shadow_right" format="reference" />
+        <attr name="shadow_bottom" format="reference" />
+    </declare-styleable>
+
+    <attr name="SwipeBackLayoutStyle" format="reference" />
+
+    <declare-styleable name="IndexBar">
+        <attr name="defaultColor" format="color" />
+        <attr name="selectedColor" format="color" />
+        <attr name="defaultSize" format="dimension" />
+        <!--是否显示中间的圆圈-->
+        <attr name="centerIndex" format="boolean" />
+        <attr name="selectedSize" format="dimension" />
+        <attr name="mode">
+            <enum name="normal" value="0" />
+            <enum name="all" value="1" />
+        </attr>
+        <attr name="margin" format="dimension" />
+        <attr name="sectionHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="top" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="horizontalSwipeOffset" format="dimension" />
+        <attr name="verticalSwipeOffset" format="dimension" />
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0" />
+            <enum name="pull_out" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="LoadingListView">
+        <attr name="sampleSize" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="ParallaxScroll">
+        <attr name="parallax_factor" format="float" />
+        <attr name="alpha_factor" format="float" />
+        <attr name="inner_parallax_factor" format="float" />
+        <attr name="parallax_views_num" format="integer" />
+        <attr name="circular_parallax" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="NumberProgressBar">
+        <attr name="progress" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progress_unreached_color" format="color" />
+        <attr name="progress_reached_color" format="color" />
+        <attr name="progress_reached_bar_height" format="dimension" />
+        <attr name="progress_unreached_bar_height" format="dimension" />
+        <attr name="progress_text_size" format="dimension" />
+        <attr name="progress_text_color" format="color" />
+        <attr name="progress_text_offset" format="dimension" />
+        <attr name="jxb_progress_text_visibility" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="NumberProgressThemes">
+        <attr name="numberProgressBarStyle" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="RoundCornerProgress">
+        <attr name="rcProgress" format="float" />
+        <attr name="rcBackgroundPadding" format="dimension" />
+        <attr name="rcBackgroundRadius" format="dimension" />
+        <attr name="rcMax" format="float" />
+        <attr name="rcIconSrc" format="integer" />
+        <attr name="rcIconSize" format="dimension" />
+        <attr name="rcIconPadding" format="dimension" />
+        <attr name="rcHeaderColor" format="color" />
+        <attr name="rcProgressColor" format="color" />
+        <attr name="rcBackgroundColor" format="color" />
+        <attr name="rcTextProgressColor" format="color" />
+        <attr name="rcTextProgress" format="string" />
+        <attr name="rcTextProgressUnit" format="string" />
+        <attr name="rcTextProgressSize" format="dimension" />
+        <attr name="rcTextProgressWidth" format="dimension" />
+        <attr name="rcTextProgressPadding" format="dimension" />
+        <attr name="rcAutoTextChange" format="boolean" />
+        <attr name="rcSecondaryProgress" format="float" />
+        <attr name="rcSecondaryProgressColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="horizontalSpacing" format="dimension" />
+        <attr name="verticalSpacing" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="FlowLayout_LayoutParams">
+        <attr name="layout_breakLine" format="boolean" />
+        <attr name="layout_horizontalSpacing" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="RoundProgressBar">
+        <attr name="roundColor" format="color" />
+        <attr name="innerRoundColor" format="color" />
+        <attr name="roundProgressColor" format="color" />
+        <attr name="roundWidth" format="dimension"></attr>
+        <attr name="rtextColor" format="color" />
+        <attr name="rtextSize" format="dimension" />
+        <attr name="rmax" format="integer"></attr>
+        <attr name="textIsDisplayable" format="boolean"></attr>
+        <attr name="style">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="EmptyView">
+        <attr name="evMarginTop" format="dimension" />
+        <attr name="evSrc" format="reference" />
+        <attr name="evText" format="string" />
+        <attr name="evText2" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ConvenientBanner">
+        <attr name="canLoop" format="boolean" />
+    </declare-styleable>
+    <!--<declare-styleable name="HorizontalListView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>-->
+    <!--进度按钮-->
+    <declare-styleable name="ZoomProgressButton">
+        <attr name="radius" format="dimension" />
+        <attr name="stripeWidth" format="dimension" /><!--进度条宽度-->
+        <attr name="zoomprogressColor" format="color" /><!--进度颜色-->
+        <attr name="centerColor" format="color" /><!--中心颜色-->
+        <!--按钮背景颜色-->
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+
+    <!--显示提示的View-->
+    <declare-styleable name="TipView">
+        <attr name="tipBackgroundColor" format="color" />
+        <attr name="tipTextColor" format="color" />
+        <attr name="tipText" format="string" />
+        <attr name="tipTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundAngleFrameLayout">
+        <attr name="rafRadius" format="dimension" />
+        <attr name="rafTopLeftRadius" format="dimension" />
+        <attr name="rafTopRightRadius" format="dimension" />
+        <attr name="rafBottomLeftRadius" format="dimension" />
+        <attr name="rafBottomRightRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleActionBar">
+        <attr name="layout_type">   <!--各种类型的布置请自行定制，暂做两种使用地方多的-->
+            <enum name="one" value="1" /> <!--左侧为标题，右侧有个更多选项（三个点）的按钮-->
+            <enum name="two" value="2" />   <!--标题在中间，左侧是按钮-->
+            <enum name="three" value="3" />   <!--标题在中间，左侧是箭头，右边是（三个点）-->
+            <enum name="four" value="4" /> <!--左侧为标题，右侧两个按钮-->
+            <enum name="five" value="5" /> <!--左侧箭头，文字可不显示，中间标题，右侧文字-->
+            <enum name="six" value="6" /> <!--左侧为，中间上下布局的主副标题，右侧为两个图标（ps:原班级探究聊天页面头部样式）-->
+            <enum name="seven" value="7" /> <!--左侧为标题，右侧一个图标（头像）-->
+            <enum name="eight" value="8" /> <!--学生端消息头部（两个textview选中状态互斥）-->
+            <enum name="nine" value="9" /> <!--左侧按钮，中间文本，右边button-->
+            <enum name="ten" value="10" /><!--中间文本-->
+            <enum name="eleven" value="11" />  <!--班级探究聊天页面头-->
+            <enum name="twelve" value="12" />  <!--学生端首页-->
+            <enum name="thirteen" value="13" />  <!--学生端首页-->
+            <enum name="fourteen" value="14" />  <!--搜索-->
+            <enum name="fifteen" value="15" />  <!--左侧返回箭头，中间标题，右侧图标按钮-->
+            <enum name="sixteen" value="16" />  <!--左侧为大小标题、图标，右侧两个按钮-->
+
+        </attr>
+        <attr name="isImmersionBar" format="boolean" />
+        <attr name="title" format="string" />
+        <attr name="bgColor" format="color|reference" />
+        <attr name="right_img1" format="reference" /><!--最右边img的src-->
+        <attr name="right_img2" format="reference" /><!--右边img的src-->
+        <attr name="right_text" format="string" /><!--右边tv的文字-->
+    </declare-styleable>
+</resources>
+

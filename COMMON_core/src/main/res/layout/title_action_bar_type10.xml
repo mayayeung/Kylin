@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><!--左侧图标和文本，中间为页面标题-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/top_actionbar_height">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_actionbar_height"
+        >
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:singleLine="true"
+            android:textColor="@color/app_main_title_color"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
