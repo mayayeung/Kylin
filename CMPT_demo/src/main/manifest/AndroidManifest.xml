@@ -22,5 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.martin.cmpt.demo.AGVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified" />
+        <activity
+            android:name="com.martin.cmpt.demo.video.VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified" />
     </application>
 </manifest>

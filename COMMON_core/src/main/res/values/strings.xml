@@ -1,4 +1,4 @@
-<resources>
+<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">android_core</string>
     <string name="crumb_title">第%1$d层</string>
     <string name="list_item_txt">第%1$d层第%2$d行</string>
@@ -8,4 +8,13 @@
     <string name="time_month">/</string>
     <string name="time_year">/</string>
     <string name="time_more">99+</string>
+
+    <string name="tips_not_wifi">You are currently using the mobile network, the player will continue to consume traffic</string>
+    <string name="tips_not_wifi_confirm">Resume</string>
+    <string name="tips_not_wifi_cancel">Stop play</string>
+    <string name="no_url">No url</string>
+    <string name="replay">Replay</string>
+    <string name="click_to_restart">Click to try again</string>
+    <string name="video_loading_failed">Video loading failed</string>
+
 </resources>

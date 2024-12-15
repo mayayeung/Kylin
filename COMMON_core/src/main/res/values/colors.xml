@@ -28,4 +28,5 @@
     <color name="app_main_color">#1E1E1E</color>
     <color name="app_color">#4991E1</color>
 
+    <color name="colorWhite">#ffffff</color>
 </resources>

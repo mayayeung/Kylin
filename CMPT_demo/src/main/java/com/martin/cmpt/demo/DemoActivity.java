@@ -9,6 +9,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.martin.cmpt.demo.video.VideoPlayerActivity;
+import com.martin.core.jzvd.JZDataSource;
+import com.martin.core.jzvd.Jzvd;
 import com.martin.core.utils.ToastUtils;
 
 import java.io.BufferedReader;
@@ -18,14 +21,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class DemoActivity extends AppCompatActivity implements View.OnClickListener {
+    AGVideo myPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_activity);
-//        findViewById(R.id.test_https).setOnClickListener(this);
+        findViewById(R.id.video_test).setOnClickListener(this);
+
     }
 
     public static void launchSelf(Context context) {
@@ -36,7 +42,23 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        ToastUtils.showToastOnce("haha");
+        String[] urls = {
+                "http://vjs.zencdn.net/v/oceans.mp4",
+                "https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-360p.mp4",
+                "http://www.w3school.com.cn/example/html5/mov_bbb.mp4",
+                "https://www.w3schools.com/html/movie.mp4",
+                "https://media.w3.org/2010/05/sintel/trailer.mp4"
+        };
+
+        ArrayList<String> uriList = new ArrayList<>();
+        uriList.add(urls[1]);
+        uriList.add(urls[0]);
+        uriList.add(urls[2]);
+        uriList.add(urls[3]);
+        uriList.add(urls[4]);
+        Intent it = new Intent(this, VideoPlayerActivity.class);
+        it.putStringArrayListExtra("videoUrlList", uriList);
+        startActivity(it);
 
 /*        new Thread(new Runnable() {
             @Override

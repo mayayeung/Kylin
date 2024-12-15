@@ -6,4 +6,7 @@
     <dimen name="spash_width">378dp</dimen>
     <dimen name="spash_height">672dp</dimen>
     <dimen name="top_bar_height">@dimen/y54</dimen>
+
+    <dimen name="jz_start_button_w_h_normal">45dp</dimen>
+    <dimen name="jz_start_button_w_h_fullscreen">62dp</dimen>
 </resources>
